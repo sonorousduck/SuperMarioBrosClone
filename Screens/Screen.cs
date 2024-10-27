@@ -14,7 +14,9 @@ namespace SequoiaEngine
         PauseScreen,
         Quit,
         CameraTest,
-        Test
+        Test,
+        World1_1,
+
     }
 
     public partial class Screen : GameScreen

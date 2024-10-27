@@ -55,6 +55,7 @@ namespace MarioClone
 
             screenManager.Screens.Add(ScreenEnum.Test, new TestScreen(this, ScreenEnum.Test));
             screenManager.Screens.Add(ScreenEnum.MainMenu, new MainMenuScreen(this, ScreenEnum.MainMenu));
+            screenManager.Screens.Add(ScreenEnum.World1_1, new World1_1(this, ScreenEnum.World1_1));
 
             IsMouseVisible = false;
             GameManager.Instance.Initialize(GraphicsDevice);
@@ -62,7 +63,7 @@ namespace MarioClone
 
             base.Initialize();
 
-            screenManager.SetNextScreen(ScreenEnum.Test);
+            screenManager.SetNextScreen(ScreenEnum.World1_1);
         }
 
         private void OnWindowResize(object sender, EventArgs e)

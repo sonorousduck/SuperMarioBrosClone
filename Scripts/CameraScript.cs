@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using MonoGame.Extended;
 using SequoiaEngine;
+using System;
 
 namespace MarioClone
 {
@@ -44,7 +45,7 @@ namespace MarioClone
         public override void Update(GameTime gameTime)
         {
             if (followObject == null) return;
-            transform.position = new Vector2(followObject.GetComponent<Transform>().position.X - 150, followObject.GetComponent<Transform>().position.Y - 225);
+            transform.position = new Vector2(MathF.Max(followObject.GetComponent<Transform>().position.X - 150, 0), Math.Min(followObject.GetComponent<Transform>().position.Y - 225, -30));
 
             GameManager.Instance.Camera.Position = transform.position;
         }

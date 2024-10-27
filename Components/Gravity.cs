@@ -5,7 +5,7 @@ namespace MarioClone
 {
     public class Gravity : Component
     {
-        public bool IsOnGround = false;
+        public bool OnGround = false;
 
         public float JumpHeight;
         public float HorizontalJumpHeight;
@@ -26,7 +26,12 @@ namespace MarioClone
 
         public void LandedOnGround()
         {
-            this.IsOnGround = true;
+            this.OnGround = true;
+        }
+
+        public void Jumped()
+        {
+            this.OnGround = false;
         }
     }
 }

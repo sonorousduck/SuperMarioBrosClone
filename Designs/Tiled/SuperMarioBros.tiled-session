@@ -1,0 +1,49 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "C:/Projects/MarioClone/Content/Maps/World1-1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "C:/Projects/MarioClone/Content/Maps/World1-1.tmx": {
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 341,
+                "y": 356
+            }
+        },
+        "C:/Projects/MarioClone/Content/Maps/World1-1.tmx#World1-1": {
+            "scaleInDock": 1
+        },
+        "Map1-1.tmx#??": {
+            "scaleInEditor": 1
+        },
+        "Map1-1.tmx#World1-1": {
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/Projects/MarioClone/Content/Tilesheets",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 40,
+    "openFiles": [
+        "C:/Projects/MarioClone/Content/Maps/World1-1.tmx"
+    ],
+    "project": "SuperMarioBros.tiled-project",
+    "recentFiles": [
+        "C:/Projects/MarioClone/Content/Maps/World1-1.tmx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
