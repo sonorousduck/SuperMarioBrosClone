@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using SequoiaEngine.Utilities;
 
@@ -17,7 +18,7 @@ namespace SequoiaEngine
                 private Quadtree staticTree;*/
 
 
-        public const float GRAVITY_CONST = 9.81f;
+        public const float GRAVITY_CONST = 9.81f * 20;
 
         private Grid grid;
         private Grid staticGrid;
@@ -120,10 +121,10 @@ namespace SequoiaEngine
 
                 if (rb.usesGravity)
                 {
-                    rb.velocity += new Vector2(0, GRAVITY_CONST * (GameManager.Instance.ElapsedSeconds) * rb.gravityScale * 10);
+                    rb.velocity += new Vector2(0, GRAVITY_CONST * (GameManager.Instance.ElapsedSeconds) * rb.gravityScale);
                 }
 
-                rb.velocity += new Vector2(rb.acceleration.X * GameManager.Instance.ElapsedSeconds, rb.acceleration.Y * GameManager.Instance.ElapsedSeconds);
+                rb.velocity += new Vector2(rb.acceleration.X * GameManager.Instance.ElapsedSeconds * GameManager.Instance.ElapsedSeconds, rb.acceleration.Y * GameManager.Instance.ElapsedSeconds * GameManager.Instance.ElapsedSeconds);
 
                 transform.position += (rb.velocity * GameManager.Instance.ElapsedSeconds).ToInt();
 

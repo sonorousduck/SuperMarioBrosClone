@@ -12,11 +12,11 @@
             "scaleInDock": 1
         },
         "C:/Projects/MarioClone/Content/Maps/World1-1.tmx": {
-            "scale": 3,
+            "scale": 0.75,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 341,
-                "y": 356
+                "x": 522.6666666666667,
+                "y": 330.6666666666667
             }
         },
         "C:/Projects/MarioClone/Content/Maps/World1-1.tmx#World1-1": {

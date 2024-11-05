@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Framework.Utilities;
 using SequoiaEngine;
 using System;
 
@@ -19,7 +20,7 @@ namespace MarioClone
 
             GameObject gameObject = new(new Transform(position, 0, size));
 
-            gameObject.Add(new Rigidbody(gravityScale: 4));
+            gameObject.Add(new Rigidbody(gravityScale: 7));
             gameObject.Add(new Sprite(ResourceManager.Get<Texture2D>("marioRight"), Color.White));
 
 
@@ -52,6 +53,7 @@ namespace MarioClone
                             rb.acceleration = Vector2.Zero;
                             playerTransform.position.Y = colliderTransform.position.Y - (collider.size.Y / 2) - playerSprite.size.Y / 2;
                             gameObject.GetComponent<Gravity>().LandedOnGround();
+
 
                         }
                         // If player's y was greater than the ground, they bonked their head
@@ -115,8 +117,21 @@ namespace MarioClone
 
                 if (gravity.OnGround)
                 {
-                    gameObject.GetComponent<Rigidbody>().velocity.Y = gravity.JumpVelocity;
+                    gameObject.GetComponent<Rigidbody>().velocity.Y = gravity.JumpVelocity * gravity.PercentageToApplyPerFrame;
+                    gravity.RemainingVelocity -= gravity.JumpVelocity * gravity.PercentageToApplyPerFrame;
                     gravity.Jumped();
+                }
+            });
+
+            keyboardInput.RegisterOnHeldAction("jump", () =>
+            {
+                Gravity gravity = gameObject.GetComponent<Gravity>();
+
+                if (!gravity.OnGround && gravity.RemainingVelocity < 0f)
+                {
+                    gameObject.GetComponent<Rigidbody>().velocity.Y += gravity.JumpVelocity * gravity.PercentageToApplyPerFrame * gravity.PercentageOnceInAir;
+                    gravity.RemainingVelocity -= gravity.JumpVelocity * gravity.PercentageToApplyPerFrame;
+                    //gravity.Jumped();
                 }
             });
 
@@ -128,7 +143,7 @@ namespace MarioClone
             keyboardInput.DefaultBindings.Add("jump", Keys.Space);
 
             gameObject.Add(keyboardInput);
-            gameObject.Add(new Gravity(114.0f, 32.0f));
+            gameObject.Add(new Gravity(330.0f, 32.0f, 0.15f, 0.75f));
 
             MouseInput mouseInput = new MouseInput();
 
