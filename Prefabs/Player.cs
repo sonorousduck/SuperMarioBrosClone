@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Framework.Utilities;
 using SequoiaEngine;
 using System;
+using System.Diagnostics;
 
 
 namespace MarioClone
@@ -34,10 +35,31 @@ namespace MarioClone
                     collider.IsColliding = true;
 
                     Transform transform = gameObject.GetComponent<Transform>();
-                    transform.position.Y = transform.previousPosition.Y;
+                    Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+
+
+                    Vector2 overlap = collider.CalculateOverlap(transform, colliderTransform, collider);
+                    Debug.WriteLine(overlap);
+                    if (Math.Abs(overlap.Y) < Math.Abs(overlap.X))
+                    {
+                        // Vertical collision (e.g., landing on ground or hitting a ceiling)
+                        /*transform.position.Y = transform.previousPosition.Y;
+                        rb.velocity.Y = 0; // Stop vertical movement
+
+                        if (overlap.Y > 0) // Landing on the ground
+                        {
+                            // Trigger landing events, etc., if needed
+                        }*/
+                    }
+                    else
+                    {
+                        // Horizontal collision (e.g., hitting a wall)
+                        transform.position.X = transform.previousPosition.X;
+                    }
+
+
                     if (collider.Layer == CollisionLayer.Ground)
                     {
-                        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                         Transform playerTransform = gameObject.GetComponent<Transform>();
                         Sprite playerSprite = gameObject.GetComponent<Sprite>();
 

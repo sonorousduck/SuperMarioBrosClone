@@ -9,14 +9,15 @@
     ],
     "fileStates": {
         "": {
-            "scaleInDock": 1
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "C:/Projects/MarioClone/Content/Maps/World1-1.tmx": {
-            "scale": 0.75,
+            "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 522.6666666666667,
-                "y": 330.6666666666667
+                "x": 364.5,
+                "y": 231
             }
         },
         "C:/Projects/MarioClone/Content/Maps/World1-1.tmx#World1-1": {

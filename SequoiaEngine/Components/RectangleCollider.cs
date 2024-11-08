@@ -36,5 +36,36 @@ namespace SequoiaEngine
             this.OnCollision = onCollision;
             this.OnCollisionEnd = onCollisionEnd;
         }
+
+
+        public Vector2 CalculateOverlap(Transform selfTransform, Transform otherTransform, RectangleCollider otherCollider)
+        {
+            // Calculate the horizontal overlap
+
+            float startX = selfTransform.position.X + this.offset.X - this.size.X / 2;
+            float endX = startX + this.size.X;
+
+            float startY = selfTransform.position.Y + this.offset.Y - this.size.Y / 2;
+            float endY = startY + this.size.Y;
+
+            float otherStartX = otherTransform.position.X + otherCollider.offset.X - otherCollider.size.X / 2;
+            float otherEndX = startX + otherCollider.size.X;
+
+            float otherStartY = otherTransform.position.Y + otherCollider.offset.Y - otherCollider.size.Y / 2;
+            float otherEndY = startY + otherCollider.size.Y;
+
+
+
+            // Calculate the overlap on the X-axis
+            float xOverlap = Math.Min(endX, otherEndX) - Math.Max(startX, otherStartX);
+
+            // Calculate the overlap on the Y-axis
+            float yOverlap = Math.Min(endY, otherEndY) - Math.Max(startY, otherStartY);
+
+
+
+
+            return new Vector2(xOverlap, yOverlap);
+        }
     }
 }
