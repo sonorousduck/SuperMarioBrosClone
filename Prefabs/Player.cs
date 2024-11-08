@@ -35,7 +35,7 @@ namespace MarioClone
 
                     Transform transform = gameObject.GetComponent<Transform>();
                     transform.position.Y = transform.previousPosition.Y;
-                    if (collider.Layer == CollisionLayer.Ground || collider.Layer == CollisionLayer.Interactables)
+                    if (collider.Layer == CollisionLayer.Ground)
                     {
                         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                         Transform playerTransform = gameObject.GetComponent<Transform>();
@@ -95,10 +95,8 @@ namespace MarioClone
             {
                 
                 Vector2 movement = new Vector2(-movementSpeed, 0f) / GameManager.Instance.ElapsedMilliseconds;
-                movement = movement.ToInt();
-                
+                movement = movement.ToInt();     
                 gameObject.GetComponent<Rigidbody>().AddScriptedMovement(movement);
-
             });
 
 
@@ -129,7 +127,6 @@ namespace MarioClone
                 {
                     gameObject.GetComponent<Rigidbody>().velocity.Y += gravity.JumpVelocity * gravity.PercentageToApplyPerFrame * gravity.PercentageOnceInAir;
                     gravity.RemainingVelocity -= gravity.JumpVelocity * gravity.PercentageToApplyPerFrame;
-                    //gravity.Jumped();
                 }
             });
 
