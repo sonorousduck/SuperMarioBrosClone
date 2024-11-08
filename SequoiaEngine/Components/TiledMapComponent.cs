@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Tiled;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,6 @@ namespace SequoiaEngine
                     go.Add(new RenderedComponent());
 
                     results.Add(go);
-
                 }
 
                 return results;
@@ -53,5 +53,27 @@ namespace SequoiaEngine
 
         }
 
+        public List<GameObject> GetInteractables(string layerName, Dictionary<string, Func<Vector2, Vector2, TiledMapProperties, GameObject>> classNameToGameObject)
+        {
+            List<GameObject> results = new();
+            TiledMapObjectLayer tiledMapLayer = this.TiledMap.GetLayer<TiledMapObjectLayer>(layerName);
+
+            if (tiledMapLayer.Objects.Length > 0)
+            {
+                foreach (TiledMapTileObject tiledObject in tiledMapLayer.Objects)
+                {
+                    Vector2 size = new Vector2(tiledObject.Size.Width, tiledObject.Size.Height).ToInt();
+                    string className = tiledObject.Tile.Type.ToString();
+
+                    if (classNameToGameObject.ContainsKey(className))
+                    {
+                        GameObject go = classNameToGameObject[className](tiledObject.Position, size, tiledObject.Properties);
+                        results.Add(go);
+                    }
+                }
+            }
+
+            return results;
+        }
     }
 }

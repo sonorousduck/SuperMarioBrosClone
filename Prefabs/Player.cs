@@ -35,12 +35,11 @@ namespace MarioClone
 
                     Transform transform = gameObject.GetComponent<Transform>();
                     transform.position.Y = transform.previousPosition.Y;
-                    if (collider.Layer == CollisionLayer.Ground)
+                    if (collider.Layer == CollisionLayer.Ground || collider.Layer == CollisionLayer.Interactables)
                     {
                         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                         Transform playerTransform = gameObject.GetComponent<Transform>();
                         Sprite playerSprite = gameObject.GetComponent<Sprite>();
-
 
                         // First, check to make sure the player isn't the the left or right of the platform. If this is the case
                         // they should just not be able to go left/right
@@ -64,7 +63,6 @@ namespace MarioClone
                             rb.velocity = new Vector2(rb.velocity.X, -rb.velocity.Y);
                             rb.acceleration = new Vector2(rb.acceleration.X, -rb.velocity.X);
                         }
-
 
 
                         // TODO: Handle if they player walked into the side of the wall

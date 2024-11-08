@@ -8,6 +8,9 @@ using MonoGame.Extended.Graphics;
 using MonoGame.Extended.BitmapFonts;
 using MonoGame.Extended.Tiled;
 using Microsoft.Xna.Framework.Audio;
+using System.Collections.Generic;
+using System;
+using MarioClone.Prefabs.Blocks;
 
 
 
@@ -138,6 +141,7 @@ namespace MarioClone
 
 
             ResourceManager.Load<Texture2D>("Sprites/MarioRight", "marioRight");
+            ResourceManager.Load<Texture2D>("Sprites/box", "box");
 
 
 
@@ -175,6 +179,13 @@ namespace MarioClone
             TiledMapComponent tiledMapComponent = new(Content.Load<TiledMap>("Maps/World1-1"));
 
             systemManager.Add(tiledMapComponent.GetCollisionLayer("Ground Collisions"));
+
+
+            Dictionary<string, Func<Vector2, Vector2, TiledMapProperties, GameObject>> interactables = new();
+            interactables.Add("questionBlock", QuestionBlock.Create);
+            interactables.Add("brick", BrickBlock.Create);
+            
+            systemManager.Add(tiledMapComponent.GetInteractables("Interactables", interactables));
 
 
             tiledMap.Add(tiledMapComponent);
