@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using SequoiaEngine.Utilities;
@@ -108,16 +109,17 @@ namespace SequoiaEngine
         {
             if (gameObjects.Count == 0) return; // i.e. we don't want to have to do the work to clear the grid everytime if we don't have to
 
-            grid.Clear();
 
             foreach ((uint id, GameObject gameObject) in gameObjects)
             {
-                if (!gameObject.IsEnabled()) return;
+                if (!gameObject.IsEnabled() || gameObject.GetComponent<Collider>().isStatic) continue;
+
+
+                bool moved = false;
 
                 Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                 Transform transform = gameObject.GetComponent<Transform>();
                 Collider genericCollider = gameObject.GetComponent<Collider>();
-                transform.previousPosition = transform.position;
 
                 if (rb.usesGravity)
                 {
@@ -127,6 +129,9 @@ namespace SequoiaEngine
                 rb.velocity += new Vector2(rb.acceleration.X * GameManager.Instance.ElapsedSeconds * GameManager.Instance.ElapsedSeconds, rb.acceleration.Y * GameManager.Instance.ElapsedSeconds * GameManager.Instance.ElapsedSeconds);
 
                 transform.position += (rb.velocity * GameManager.Instance.ElapsedSeconds).ToInt();
+
+
+                // This is where I will check the sweep? Well, before applying any movement at all, I should check?
 
 
 
@@ -141,6 +146,23 @@ namespace SequoiaEngine
                     child.GetComponent<Transform>().position = transform.position + child.GetComponent<Transform>().Offset;
                 }
 
+
+                if (moved)
+                {
+                    transform.previousPosition = transform.position;
+                }
+            }
+
+
+            grid.Clear();
+            foreach ((uint id, GameObject gameObject) in gameObjects)
+            {
+                if (!gameObject.IsEnabled()) continue;
+
+                Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+                Transform transform = gameObject.GetComponent<Transform>();
+                Collider genericCollider = gameObject.GetComponent<Collider>();
+                
                 if (!genericCollider.isStatic && !transform.IsHUD)
                 {
                     grid.Insert(gameObject);
@@ -156,17 +178,14 @@ namespace SequoiaEngine
                 }
             }
             
-            if (staticGrid.ShouldRebuild)
-            {
-                staticGrid.ShouldRebuild = false;
-            }
 
+            staticGrid.ShouldRebuild = false;
             hudGrid.ShouldRebuild = false;
 
 
             foreach ((uint id, GameObject gameObject) in gameObjects)
             {
-                if (!gameObject.IsEnabled()) return;
+                if (!gameObject.IsEnabled()) continue;
 
                 UpdateGameObject(gameObject);
             }
@@ -192,7 +211,6 @@ namespace SequoiaEngine
 
                 if (HasCollision(gameObject, possibleCollision))
                 {
-
                     collisionsThisFrame.Add(possibleCollision.Id);
                     // On Collision Start
                     if (!rb.currentlyCollidingWith.Contains(possibleCollision.Id))
@@ -284,28 +302,32 @@ namespace SequoiaEngine
             {
                 return false;
             }
-            if (one.ContainsComponent<CircleCollider>())
-            {
-                if (two.ContainsComponent<CircleCollider>())
-                {
-                    return CircleOnCircle(one, two, isHud);
-                }
-                else
-                {
-                    return CircleOnSquare(one, two, isHud);
-                }
-            }
-            else
-            {
-                if (two.ContainsComponent<CircleCollider>())
-                {
-                    return CircleOnSquare(two, one, isHud);
-                }
-                else
-                {
-                    return SquareOnSquare(one, two, isHud);
-                }
-            }
+
+            return SquareOnSquare(one, two, isHud);
+
+
+            //if (one.ContainsComponent<CircleCollider>())
+            //{
+            //    if (two.ContainsComponent<CircleCollider>())
+            //    {
+            //        return CircleOnCircle(one, two, isHud);
+            //    }
+            //    else
+            //    {
+            //        return CircleOnSquare(one, two, isHud);
+            //    }
+            //}
+            //else
+            //{
+            //    if (two.ContainsComponent<CircleCollider>())
+            //    {
+            //        return CircleOnSquare(two, one, isHud);
+            //    }
+            //    else
+            //    {
+            //        return SquareOnSquare(one, two, isHud);
+            //    }
+            //}
         }
 
 
@@ -423,7 +445,5 @@ namespace SequoiaEngine
                     squareOnePosition.Y + square1Collider.size.Y / 2f < squareTwoPosition.Y - square2Collider.size.Y / 2f // sq1 bottom is above sq1 top
                     );
         }
-
-
     }
 }

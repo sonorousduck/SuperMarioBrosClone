@@ -7,7 +7,10 @@ namespace SequoiaEngine
     {
         // Centered at object's position
         public Vector2 size;
+        public Vector2 Half;
         public bool IsColliding;
+
+        public bool IsTrigger;
 
         public Action<GameObject> OnCollisionStart;
         public Action<GameObject> OnCollision;
@@ -22,11 +25,13 @@ namespace SequoiaEngine
             float yOffset = 0, 
             Action<GameObject> onCollisionStart = null,
             Action<GameObject> onCollision = null,
-            Action<GameObject> onCollisionEnd = null
+            Action<GameObject> onCollisionEnd = null,
+            bool IsTrigger = false
             )
         {
             offset = new Vector2(xOffset, yOffset);
             this.size = size;
+            this.Half = size / 2;
             this.isStatic = isStatic;
 
             this.Layer = layer;
@@ -35,6 +40,7 @@ namespace SequoiaEngine
             this.OnCollisionStart = onCollisionStart;
             this.OnCollision = onCollision;
             this.OnCollisionEnd = onCollisionEnd;
+            this.IsTrigger = IsTrigger;
         }
 
 

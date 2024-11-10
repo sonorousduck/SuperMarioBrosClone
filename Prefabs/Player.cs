@@ -38,57 +38,56 @@ namespace MarioClone
                     Rigidbody rb = gameObject.GetComponent<Rigidbody>();
 
 
-                    Vector2 overlap = collider.CalculateOverlap(transform, colliderTransform, collider);
-                    Debug.WriteLine(overlap);
-                    if (Math.Abs(overlap.Y) < Math.Abs(overlap.X))
-                    {
-                        // Vertical collision (e.g., landing on ground or hitting a ceiling)
-                        /*transform.position.Y = transform.previousPosition.Y;
-                        rb.velocity.Y = 0; // Stop vertical movement
+                    //Vector2 overlap = collider.CalculateOverlap(transform, colliderTransform, collider);
+                    //if (Math.Abs(overlap.Y) < Math.Abs(overlap.X))
+                    //{
+                    //    // Vertical collision (e.g., landing on ground or hitting a ceiling)
+                    //    /*transform.position.Y = transform.previousPosition.Y;
+                    //    rb.velocity.Y = 0; // Stop vertical movement
 
-                        if (overlap.Y > 0) // Landing on the ground
-                        {
-                            // Trigger landing events, etc., if needed
-                        }*/
-                    }
-                    else
-                    {
-                        // Horizontal collision (e.g., hitting a wall)
-                        transform.position.X = transform.previousPosition.X;
-                    }
-
-
-                    if (collider.Layer == CollisionLayer.Ground)
-                    {
-                        Transform playerTransform = gameObject.GetComponent<Transform>();
-                        Sprite playerSprite = gameObject.GetComponent<Sprite>();
-
-                        // First, check to make sure the player isn't the the left or right of the platform. If this is the case
-                        // they should just not be able to go left/right
+                    //    if (overlap.Y > 0) // Landing on the ground
+                    //    {
+                    //        // Trigger landing events, etc., if needed
+                    //    }*/
+                    //}
+                    //else
+                    //{
+                    //    // Horizontal collision (e.g., hitting a wall)
+                    //    transform.position.X = transform.previousPosition.X;
+                    //}
 
 
-                        // Check if player's y was less than the ground, this means they landed on it
-                        if (playerTransform.position.Y - playerSprite.size.Y / 2 < colliderTransform.position.Y)
-                        {
-                            rb.velocity.Y = 0;
-                            rb.acceleration = Vector2.Zero;
-                            playerTransform.position.Y = colliderTransform.position.Y - (collider.size.Y / 2) - playerSprite.size.Y / 2;
-                            gameObject.GetComponent<Gravity>().LandedOnGround();
+                    //if (collider.Layer == CollisionLayer.Ground)
+                    //{
+                    //    Transform playerTransform = gameObject.GetComponent<Transform>();
+                    //    Sprite playerSprite = gameObject.GetComponent<Sprite>();
+
+                    //    // First, check to make sure the player isn't the the left or right of the platform. If this is the case
+                    //    // they should just not be able to go left/right
 
 
-                        }
-                        // If player's y was greater than the ground, they bonked their head
-                        else if (playerTransform.position.Y - playerSprite.size.Y / 2 > colliderTransform.position.Y)
-                        {
-                            playerTransform.position.Y = colliderTransform.position.Y + (collider.size.Y / 2) + playerSprite.size.Y / 2;
-
-                            rb.velocity = new Vector2(rb.velocity.X, -rb.velocity.Y);
-                            rb.acceleration = new Vector2(rb.acceleration.X, -rb.velocity.X);
-                        }
+                    //    // Check if player's y was less than the ground, this means they landed on it
+                    //    if (playerTransform.position.Y - playerSprite.size.Y / 2 < colliderTransform.position.Y)
+                    //    {
+                    //        rb.velocity.Y = 0;
+                    //        rb.acceleration = Vector2.Zero;
+                    //        playerTransform.position.Y = colliderTransform.position.Y - (collider.size.Y / 2) - playerSprite.size.Y / 2;
+                    //        gameObject.GetComponent<Gravity>().LandedOnGround();
 
 
-                        // TODO: Handle if they player walked into the side of the wall
-                    }
+                    //    }
+                    //    // If player's y was greater than the ground, they bonked their head
+                    //    else if (playerTransform.position.Y - playerSprite.size.Y / 2 > colliderTransform.position.Y)
+                    //    {
+                    //        playerTransform.position.Y = colliderTransform.position.Y + (collider.size.Y / 2) + playerSprite.size.Y / 2;
+
+                    //        rb.velocity = new Vector2(rb.velocity.X, -rb.velocity.Y);
+                    //        rb.acceleration = new Vector2(rb.acceleration.X, -rb.velocity.X);
+                    //    }
+
+
+                    //    // TODO: Handle if they player walked into the side of the wall
+                    //}
                 }
             };
 

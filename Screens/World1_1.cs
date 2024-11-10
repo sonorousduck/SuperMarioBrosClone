@@ -194,7 +194,7 @@ namespace MarioClone
             systemManager.Add(tiledMap);
 
 
-            GameObject player = Player.Create(new Vector2(10, 17 * TILESIZE), Vector2.One);
+            GameObject player = Player.Create(new Vector2(10 + 325, 10 * TILESIZE), Vector2.One);
 
             systemManager.Add(player);
 

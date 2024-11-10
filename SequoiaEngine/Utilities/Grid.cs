@@ -93,16 +93,16 @@ namespace SequoiaEngine
             grid = Resize(GridAmount);
         }
 
-        public HashSet<GameObject> GetPossibleCollisions(ref GameObject entity, bool isHud = false)
+        public HashSet<GameObject> GetPossibleCollisions(ref GameObject entity, bool isHud = false, float deltaX = 0, float deltaY = 0)
         {
             HashSet<GameObject> results = new HashSet<GameObject>();
 
-            GetPossibleCollisions(entity, ref results, isHud);
+            GetPossibleCollisions(entity, ref results, isHud, deltaX, deltaY);
 
             return results;
         }
 
-        private void GetPossibleCollisions(GameObject entity, ref HashSet<GameObject> results, bool isHud)
+        private void GetPossibleCollisions(GameObject entity, ref HashSet<GameObject> results, bool isHud, float deltaX, float deltaY)
         {
             Transform transform = entity.GetComponent<Transform>();
             Vector2 colliderSize = Vector2.Zero;
@@ -122,11 +122,12 @@ namespace SequoiaEngine
                 colliderSize = new Vector2(circleCollider.radius, circleCollider.radius);
                 centerOfCollider = circleCollider.offset;
                 entityLayer = circleCollider.LayersToCollideWith;
-
             }
 
+
+            // If we have a deltaX or a deltaY, we will move the endPosition to just be where it would have ended. Essentially, we have a really big box
             Vector2 position = transform.position + centerOfCollider;
-            Vector2 endPosition = position + colliderSize;
+            Vector2 endPosition = position + colliderSize + new Vector2(deltaX, deltaY);
 
 
             // If the collider is not HUD, but we are looking for HUD elements, we need to transform it from world space to screen space
