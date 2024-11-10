@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using nkast.Aether.Physics2D.Dynamics;
+using nkast.Aether.Physics2D.Dynamics.Contacts;
 
 namespace SequoiaEngine
 {
@@ -13,8 +16,10 @@ namespace SequoiaEngine
         public bool IsTrigger;
 
         public Action<GameObject> OnCollisionStart;
-        public Action<GameObject> OnCollision;
-        public Action<GameObject> OnCollisionEnd;
+        public OnCollisionEventHandler OnCollision;
+        public OnSeparationEventHandler OnCollisionEnd;
+
+        public HashSet<Body> ActiveCollisions;
 
 
         public RectangleCollider(Vector2 size, 
@@ -24,9 +29,11 @@ namespace SequoiaEngine
             float xOffset = 0, 
             float yOffset = 0, 
             Action<GameObject> onCollisionStart = null,
-            Action<GameObject> onCollision = null,
-            Action<GameObject> onCollisionEnd = null,
-            bool IsTrigger = false
+            OnCollisionEventHandler onCollision = null,
+            OnSeparationEventHandler onCollisionEnd = null,
+            bool IsTrigger = false,
+            float density = 1f, 
+            BodyType bodyType = BodyType.Static
             )
         {
             offset = new Vector2(xOffset, yOffset);
@@ -41,37 +48,41 @@ namespace SequoiaEngine
             this.OnCollision = onCollision;
             this.OnCollisionEnd = onCollisionEnd;
             this.IsTrigger = IsTrigger;
+            this.bodyType = bodyType;
+            this.density = density;
+
+            this.ActiveCollisions = new();
         }
 
-
-        public Vector2 CalculateOverlap(Transform selfTransform, Transform otherTransform, RectangleCollider otherCollider)
+        private bool DefaultCollisionEventHandler(Fixture fixture, Fixture other, Contact contact)
         {
-            // Calculate the horizontal overlap
+            IsColliding = true;
 
-            float startX = selfTransform.position.X + this.offset.X - this.size.X / 2;
-            float endX = startX + this.size.X;
+            this.ActiveCollisions.Add(other.Body);
 
-            float startY = selfTransform.position.Y + this.offset.Y - this.size.Y / 2;
-            float endY = startY + this.size.Y;
+            return true;
+        }
 
-            float otherStartX = otherTransform.position.X + otherCollider.offset.X - otherCollider.size.X / 2;
-            float otherEndX = startX + otherCollider.size.X;
+        private void DefaultSeparationEventHandler(Fixture fixture, Fixture other, Contact contact)
+        {
+            this.ActiveCollisions.Remove(other.Body);
 
-            float otherStartY = otherTransform.position.Y + otherCollider.offset.Y - otherCollider.size.Y / 2;
-            float otherEndY = startY + otherCollider.size.Y;
+            if (this.ActiveCollisions.Count == 0)
+            {
+                IsColliding = false;
+            }
+        }
 
+        
 
+        public override void CreateBody(World world, Transform position)
+        {
+            this.Body = world.CreateRectangle(this.size.X, this.size.Y, this.density, position.position + this.offset, position.rotation, this.bodyType);
+            this.Body.OnCollision += this.OnCollision;
+            this.Body.OnCollision += DefaultCollisionEventHandler;
 
-            // Calculate the overlap on the X-axis
-            float xOverlap = Math.Min(endX, otherEndX) - Math.Max(startX, otherStartX);
-
-            // Calculate the overlap on the Y-axis
-            float yOverlap = Math.Min(endY, otherEndY) - Math.Max(startY, otherStartY);
-
-
-
-
-            return new Vector2(xOverlap, yOverlap);
+            this.Body.OnSeparation += this.OnCollisionEnd;
+            this.Body.OnSeparation += DefaultSeparationEventHandler;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using nkast.Aether.Physics2D.Dynamics;
+using nkast.Aether.Physics2D.Dynamics.Contacts;
 
 
 namespace SequoiaEngine
@@ -28,9 +30,15 @@ namespace SequoiaEngine
         public bool isStatic;
         public Vector2 offset;
 
+        public BodyType bodyType;
+        public float density;
 
         public CollisionLayer Layer;
         public CollisionLayer LayersToCollideWith;
 
+        public Body Body;
+
+
+        public abstract void CreateBody(World world, Transform position);
     }
 }

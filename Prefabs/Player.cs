@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Framework.Utilities;
+using nkast.Aether.Physics2D.Dynamics;
+using nkast.Aether.Physics2D.Dynamics.Contacts;
 using SequoiaEngine;
 using System;
 using System.Diagnostics;
@@ -16,7 +18,7 @@ namespace MarioClone
 
         public static GameObject Create(Vector2 position, Vector2 size)
         {
-            int movementSpeed = 50;
+            int movementSpeed = 10000;
 
 
             GameObject gameObject = new(new Transform(position, 0, size));
@@ -25,17 +27,18 @@ namespace MarioClone
             gameObject.Add(new Sprite(ResourceManager.Get<Texture2D>("marioRight"), Color.White));
 
 
-            Action<GameObject> onCollision = (GameObject other) =>
+            OnCollisionEventHandler onCollision = (Fixture fixture, Fixture other, Contact contact) =>
             {
-                if (other != null)
-                {
-                    RectangleCollider collider = other.GetComponent<RectangleCollider>();
-                    Transform colliderTransform = other.GetComponent<Transform>();
+                return true;
+                //if (other != null)
+                //{
+                //    RectangleCollider collider = other.GetComponent<RectangleCollider>();
+                //    Transform colliderTransform = other.GetComponent<Transform>();
 
-                    collider.IsColliding = true;
+                //    collider.IsColliding = true;
 
-                    Transform transform = gameObject.GetComponent<Transform>();
-                    Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+                //    Transform transform = gameObject.GetComponent<Transform>();
+                //    Rigidbody rb = gameObject.GetComponent<Rigidbody>();
 
 
                     //Vector2 overlap = collider.CalculateOverlap(transform, colliderTransform, collider);
@@ -88,25 +91,25 @@ namespace MarioClone
 
                     //    // TODO: Handle if they player walked into the side of the wall
                     //}
-                }
+                //}
             };
 
-            Action<GameObject> onCollisionEnd = (GameObject other) =>
+            OnSeparationEventHandler onCollisionEnd = (Fixture sender, Fixture other, Contact contact) =>
             {
-                if (other != null)
-                {
-                    RectangleCollider collider = other.GetComponent<RectangleCollider>();
-                    Transform colliderTransform = other.GetComponent<Transform>();
-                    collider.IsColliding = false;
-                    if (collider.Layer == CollisionLayer.Ground)
-                    {
-                        gameObject.GetComponent<Gravity>().Jumped();
-                    }
-                }
+                //if (other != null)
+                //{
+                //    RectangleCollider collider = other.GetComponent<RectangleCollider>();
+                //    Transform colliderTransform = other.GetComponent<Transform>();
+                //    collider.IsColliding = false;
+                //    if (collider.Layer == CollisionLayer.Ground)
+                //    {
+                //        gameObject.GetComponent<Gravity>().Jumped();
+                //    }
+                //}
             };
 
 
-            gameObject.Add(new RectangleCollider(size * Vector2.One * gameObject.GetComponent<Sprite>().size, false, CollisionLayer.Player, CollisionLayer.Environment | CollisionLayer.Ground, onCollisionStart: onCollision, onCollision: onCollision, onCollisionEnd: onCollisionEnd));
+            gameObject.Add(new RectangleCollider(size * Vector2.One * gameObject.GetComponent<Sprite>().size, false, CollisionLayer.Player, CollisionLayer.Environment | CollisionLayer.Ground, onCollision: onCollision, onCollisionEnd: onCollisionEnd, bodyType: BodyType.Dynamic));
 
 
             SequoiaEngine.KeyboardInput keyboardInput = new SequoiaEngine.KeyboardInput();
@@ -114,23 +117,48 @@ namespace MarioClone
 
             keyboardInput.RegisterOnHeldAction("moveLeft", () =>
             {
-                
-                Vector2 movement = new Vector2(-movementSpeed, 0f) / GameManager.Instance.ElapsedMilliseconds;
-                movement = movement.ToInt();     
-                gameObject.GetComponent<Rigidbody>().AddScriptedMovement(movement);
+                RectangleCollider rectangleCollider = gameObject.GetComponent<RectangleCollider>();
+                Vector2 movement = new Vector2(-movementSpeed, rectangleCollider.Body.LinearVelocity.Y);
+                //movement = movement.ToInt();     
+
+                rectangleCollider.Body.LinearVelocity = movement;
+            });
+
+            keyboardInput.RegisterOnReleaseAction("moveLeft", () =>
+            {
+                RectangleCollider rectangleCollider = gameObject.GetComponent<RectangleCollider>();
+                Vector2 movement = new Vector2(0f, rectangleCollider.Body.LinearVelocity.Y);
+                rectangleCollider.Body.LinearVelocity = movement;
             });
 
 
             keyboardInput.RegisterOnHeldAction("moveRight", () =>
             {
-                Vector2 movement = new Vector2(movementSpeed, 0f) / GameManager.Instance.ElapsedMilliseconds;
-                movement = new Vector2((int)movement.X, (int)movement.Y);
-                gameObject.GetComponent<Rigidbody>().AddScriptedMovement(movement);
+                RectangleCollider rectangleCollider = gameObject.GetComponent<RectangleCollider>();
+                Vector2 movement = new Vector2(movementSpeed, rectangleCollider.Body.LinearVelocity.Y);
+
+                rectangleCollider.Body.LinearVelocity = movement;
+            });
+
+            keyboardInput.RegisterOnReleaseAction("moveRight", () =>
+            {
+                RectangleCollider rectangleCollider = gameObject.GetComponent<RectangleCollider>();
+                Vector2 movement = new Vector2(0f, rectangleCollider.Body.LinearVelocity.Y);
+                rectangleCollider.Body.LinearVelocity = movement;
             });
 
             keyboardInput.RegisterOnPressAction("jump", () =>
             {
+                RectangleCollider rectangleCollider = gameObject.GetComponent<RectangleCollider>();
                 Gravity gravity = gameObject.GetComponent<Gravity>();
+
+                if (rectangleCollider.IsColliding)
+                {
+                    rectangleCollider.Body.ApplyLinearImpulse(new Vector2(0f, gravity.JumpVelocity * 100f));
+                }
+
+
+
 
                 if (gravity.OnGround)
                 {
@@ -159,7 +187,7 @@ namespace MarioClone
             keyboardInput.DefaultBindings.Add("jump", Keys.Space);
 
             gameObject.Add(keyboardInput);
-            gameObject.Add(new Gravity(330.0f, 32.0f, 0.15f, 0.75f));
+            gameObject.Add(new Gravity(3300.0f, 320.0f, 0.15f, 0.75f));
 
             MouseInput mouseInput = new MouseInput();
 
