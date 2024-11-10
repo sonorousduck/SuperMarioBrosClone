@@ -18,7 +18,7 @@ namespace MarioClone
 
         public static GameObject Create(Vector2 position, Vector2 size)
         {
-            int movementSpeed = 10000;
+            int movementSpeed = 100;
 
 
             GameObject gameObject = new(new Transform(position, 0, size));
@@ -109,7 +109,15 @@ namespace MarioClone
             };
 
 
-            gameObject.Add(new RectangleCollider(size * Vector2.One * gameObject.GetComponent<Sprite>().size, false, CollisionLayer.Player, CollisionLayer.Environment | CollisionLayer.Ground, onCollision: onCollision, onCollisionEnd: onCollisionEnd, bodyType: BodyType.Dynamic));
+            gameObject.Add(new RectangleCollider(
+                size * Vector2.One * gameObject.GetComponent<Sprite>().size, 
+                false, 
+                CollisionLayer.Player, 
+                CollisionLayer.Environment | CollisionLayer.Ground, 
+                onCollision: onCollision, 
+                onCollisionEnd: onCollisionEnd, 
+                bodyType: BodyType.Dynamic,
+                density: 10f));
 
 
             SequoiaEngine.KeyboardInput keyboardInput = new SequoiaEngine.KeyboardInput();
@@ -135,7 +143,8 @@ namespace MarioClone
             keyboardInput.RegisterOnHeldAction("moveRight", () =>
             {
                 RectangleCollider rectangleCollider = gameObject.GetComponent<RectangleCollider>();
-                Vector2 movement = new Vector2(movementSpeed, rectangleCollider.Body.LinearVelocity.Y);
+                Vector2 currentLinearVelocity = rectangleCollider.Body.LinearVelocity;
+                Vector2 movement = new Vector2(movementSpeed, currentLinearVelocity.Y);
 
                 rectangleCollider.Body.LinearVelocity = movement;
             });
@@ -156,10 +165,6 @@ namespace MarioClone
                 {
                     rectangleCollider.Body.ApplyLinearImpulse(new Vector2(0f, gravity.JumpVelocity * 100f));
                 }
-
-
-
-
                 if (gravity.OnGround)
                 {
                     gameObject.GetComponent<Rigidbody>().velocity.Y = gravity.JumpVelocity * gravity.PercentageToApplyPerFrame;

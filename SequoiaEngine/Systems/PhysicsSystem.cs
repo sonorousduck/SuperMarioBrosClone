@@ -21,20 +21,20 @@ namespace SequoiaEngine
         public PhysicsSystem(SystemManager systemManager) : base(systemManager, typeof(Transform), typeof(Rigidbody), typeof(Collider))
         {
             world = new World();
-            world.Gravity = new Vector2(0f, 100f);
+            world.Gravity = new Vector2(0f, 150f);
         }
 
         public PhysicsSystem(SystemManager systemManager, Vector2 dimensions, Vector2 gridSize) : base(systemManager, typeof(Transform), typeof(Rigidbody), typeof(Collider))
         {
             world = new World();
-            world.Gravity = new Vector2(0f, 100f);
+            world.Gravity = new Vector2(0f, 150f);
 
         }
 
         public PhysicsSystem(SystemManager systemManager, Vector2 dimensions, Vector2 gridSize, Vector2 gridStartPos) : base(systemManager, typeof(Transform), typeof(Rigidbody), typeof(Collider))
         {
             world = new World();
-            world.Gravity = new Vector2(0f, 100f);
+            world.Gravity = new Vector2(0f, 150f);
 
         }
 
@@ -72,6 +72,11 @@ namespace SequoiaEngine
                 if (gameObject.TryGetComponent(out RectangleCollider rectangleCollider))
                 {
                     transform.position = rectangleCollider.Body.Position;
+
+                    if (rectangleCollider.Body.BodyType != BodyType.Static)
+                    {
+                        Debug.WriteLine(rectangleCollider.Body.LinearVelocity);
+                    }
                 }
                 else if (gameObject.TryGetComponent(out CircleCollider circleCollider))
                 {

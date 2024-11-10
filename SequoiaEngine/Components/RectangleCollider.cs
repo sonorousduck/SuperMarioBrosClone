@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using nkast.Aether.Physics2D.Dynamics;
 using nkast.Aether.Physics2D.Dynamics.Contacts;
@@ -83,6 +84,8 @@ namespace SequoiaEngine
 
             this.Body.OnSeparation += this.OnCollisionEnd;
             this.Body.OnSeparation += DefaultSeparationEventHandler;
+
+            this.Body.FixtureList[0].Friction = 0f;
         }
     }
 }

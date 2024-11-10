@@ -136,7 +136,7 @@ namespace MarioClone
         {
 
             renderingSystem = new RenderingSystem(systemManager, window.ClientBounds.Height, camera, new Vector2(window.ClientBounds.Width, window.ClientBounds.Height));
-            renderingSystem.debugMode = true;
+            renderingSystem.debugMode = false;
             fontRenderingSystem = new FontRenderingSystem(systemManager, camera);
 
 
