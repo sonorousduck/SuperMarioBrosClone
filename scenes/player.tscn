@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://vttpyngfbhq6"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_42xyc"]
+[ext_resource type="Texture2D" uid="uid://d16672peta822" path="res://assets/sprites/MarioRight.png" id="1_p86pa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jh1lk"]
+size = Vector2(8, 19)
+
+[node name="Player" type="CharacterBody2D"]
+z_index = 5
+position = Vector2(0, -10)
+script = ExtResource("1_42xyc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_p86pa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_jh1lk")
