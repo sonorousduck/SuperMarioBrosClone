@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://diwxixftnc41h"]
+
+[ext_resource type="Texture2D" uid="uid://beogot4vkimde" path="res://assets/sprites/GoombaRight.png" id="1_40a4a"]
+[ext_resource type="Script" path="res://scripts/Enemies/goomba.gd" id="1_maja0"]
+
+[node name="Goomba" type="Node2D"]
+script = ExtResource("1_maja0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_40a4a")
+
+[node name="RayCastRight" type="RayCast2D" parent="."]
+target_position = Vector2(6, 0)
+
+[node name="RayCastLeft" type="RayCast2D" parent="."]
+target_position = Vector2(-6, 0)
