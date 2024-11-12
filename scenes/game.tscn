@@ -62,7 +62,7 @@ tile_set = SubResource("TileSet_7pn36")
 [node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
 physics_interpolation_mode = 1
 position = Vector2(62, -1)
-zoom = Vector2(2, 2)
+zoom = Vector2(4, 4)
 process_callback = 0
 limit_bottom = 60
 position_smoothing_enabled = true

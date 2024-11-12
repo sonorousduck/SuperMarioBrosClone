@@ -22,4 +22,5 @@ func _process(delta: float) -> void:
 		sprite.flip_h = false
 
 
+func _physics_process(delta: float) -> void:
 	position.x += direction * SPEED * delta 
