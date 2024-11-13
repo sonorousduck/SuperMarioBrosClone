@@ -2,10 +2,17 @@ extends CharacterBody2D
 
 class_name Player
 
-const SPEED = 130.0
+const SPEED = 200.0
 const GRAVITY_MODIFIER = 2
-const JUMP_VELOCITY = -500.0 
-const BOUNCE_VELOCITY = -200.0 
+const JUMP_VELOCITY = -350.0 
+const BOUNCE_VELOCITY = -200.0
+const RUN_SPEED_DAMPING = 0.5
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+
+@onready var animation_player = $AnimationPlayer
+
+
 
 enum PlayerMode {
 	SMALL,
@@ -38,7 +45,7 @@ func bounce():
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
-		velocity += get_gravity() * delta * GRAVITY_MODIFIER
+		velocity.y += gravity * delta
 	
 
 	if Input.is_action_just_pressed("esc"):
@@ -49,6 +56,9 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
+		if (player_mode == PlayerMode.SMALL):
+			animation_player.play("small_jump")
+
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 		velocity.y *= 0.5;
 
@@ -56,9 +66,9 @@ func _physics_process(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("move_left", "move_right")
 	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = lerpf(velocity.x, SPEED * direction, RUN_SPEED_DAMPING * delta)
+	else: 
+		velocity.x = move_toward(velocity.x, 0, SPEED * delta)
 
 
 	var collision = get_last_slide_collision()

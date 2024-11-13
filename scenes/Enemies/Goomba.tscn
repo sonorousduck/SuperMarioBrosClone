@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://diwxixftnc41h"]
+[gd_scene load_steps=11 format=3 uid="uid://diwxixftnc41h"]
 
 [ext_resource type="Texture2D" uid="uid://beogot4vkimde" path="res://assets/sprites/GoombaRight.png" id="1_40a4a"]
 [ext_resource type="Script" path="res://scripts/Enemies/goomba.gd" id="1_maja0"]
 [ext_resource type="Texture2D" uid="uid://cmg18ydpnafgh" path="res://assets/sprites/SquishedGoomba.png" id="3_b3312"]
 [ext_resource type="Script" path="res://scripts/Enemies/top_enemy_collider.gd" id="4_uyib0"]
+[ext_resource type="AudioStream" uid="uid://dst6dbuwdv334" path="res://assets/sounds/smb_kick.wav" id="5_rctqo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nygg2"]
 size = Vector2(16, 9)
@@ -41,6 +42,18 @@ tracks/2/path = NodePath("Area2D/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("DeathSound:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -100,6 +113,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("DeathSound:playing")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_f57r7"]
 _data = {
@@ -146,6 +171,10 @@ script = ExtResource("4_uyib0")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(0, -14)
 shape = SubResource("RectangleShape2D_u0u25")
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_rctqo")
+bus = &"SFX"
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

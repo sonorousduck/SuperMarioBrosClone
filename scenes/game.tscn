@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://bif5dei2tr45i"]
+[gd_scene load_steps=11 format=4 uid="uid://bif5dei2tr45i"]
 
 [ext_resource type="PackedScene" uid="uid://vttpyngfbhq6" path="res://scenes/player.tscn" id="1_cnpoc"]
 [ext_resource type="Texture2D" uid="uid://yb3kmstn5q5i" path="res://assets/sprites/World1-1.png" id="2_dvqk5"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://diwxixftnc41h" path="res://scenes/Enemies/Goomba.tscn" id="4_q2vk4"]
 [ext_resource type="PackedScene" uid="uid://kaa7y836vypw" path="res://scenes/QuestionBlock.tscn" id="5_srt2n"]
 [ext_resource type="PackedScene" uid="uid://dlbda1vjx8nii" path="res://scenes/brick.tscn" id="6_cj5b3"]
+[ext_resource type="PackedScene" uid="uid://bddj1h1223p6k" path="res://scenes/music.tscn" id="7_vx8jp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_edej0"]
 texture = ExtResource("2_dvqk5")
@@ -90,6 +91,7 @@ position = Vector2(264, 4)
 
 [node name="QuestionBlock" parent="QuestionBlocks" instance=ExtResource("5_srt2n")]
 position = Vector2(184, -40)
+containing_item = 2
 
 [node name="QuestionBlock2" parent="QuestionBlocks" instance=ExtResource("5_srt2n")]
 position = Vector2(216, -40)
@@ -197,3 +199,5 @@ position = Vector2(2328, -40)
 
 [node name="Brick24" parent="Bricks" instance=ExtResource("6_cj5b3")]
 position = Vector2(2360, -40)
+
+[node name="Music" parent="." instance=ExtResource("7_vx8jp")]

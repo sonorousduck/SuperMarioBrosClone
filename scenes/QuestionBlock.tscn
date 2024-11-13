@@ -1,18 +1,40 @@
-[gd_scene load_steps=4 format=3 uid="uid://kaa7y836vypw"]
+[gd_scene load_steps=7 format=3 uid="uid://kaa7y836vypw"]
 
 [ext_resource type="Script" path="res://scripts/Block.gd" id="1_c7fjh"]
 [ext_resource type="Texture2D" uid="uid://yb3kmstn5q5i" path="res://assets/sprites/World1-1.png" id="1_yo0cc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ne0xr"]
+atlas = ExtResource("1_yo0cc")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4rean"]
+atlas = ExtResource("1_yo0cc")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xya1j"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ne0xr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4rean")
+}],
+"loop": false,
+"name": &"become_empty",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m818j"]
 size = Vector2(16, 16)
 
 [node name="QuestionBlock" type="StaticBody2D"]
+z_index = 1
 script = ExtResource("1_c7fjh")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_yo0cc")
-region_enabled = true
-region_rect = Rect2(48, 32, 16, 16)
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_xya1j")
+animation = &"become_empty"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_m818j")

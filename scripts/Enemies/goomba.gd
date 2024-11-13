@@ -16,7 +16,6 @@ var isSquished: bool = false
 @onready var sprite = $Sprite2D
 @onready var animation_player = $AnimationPlayer
 
-
 func handle_animation_player():
 	animation_player.play("death")
 
