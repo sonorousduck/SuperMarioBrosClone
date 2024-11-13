@@ -1,13 +1,14 @@
 extends StaticBody2D
 
 
-class_name Block
+class_name Brick
 
 
 
 @onready var ray_cast_2d = $RayCast2D as RayCast2D
 
-@export var containing_item: Item.ItemType = Item.ItemType.COIN;
+@export var containing_item: Item.ItemType = Item.ItemType.NONE
+@export var numCoins: int = 0
 
 func bump(player_mode):
 	

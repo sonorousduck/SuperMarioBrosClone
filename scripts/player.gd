@@ -20,8 +20,12 @@ func handle_movement_collision(collision: KinematicCollision2D):
 		var collision_angle = rad_to_deg(collision.get_angle())
 		if roundf(collision_angle) == 180:
 			(collision.get_collider() as Block).bump(player_mode)
-		pass
-	
+		
+	if (collision.get_collider() is Brick):
+		var collision_angle = rad_to_deg(collision.get_angle())
+		if roundf(collision_angle) == 180:
+			(collision.get_collider() as Brick).bump(player_mode)
+		
 	# if (collision.get_collider() is Pipe):
 	# 	pass
 
