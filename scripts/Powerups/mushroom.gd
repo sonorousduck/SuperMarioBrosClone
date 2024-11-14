@@ -3,8 +3,9 @@ extends Area2D
 class_name Mushroom
 
 @export var horizontal_speed = 20
-@export var max_vertical_speed = 120
+@export var max_vertical_speed = 175
 @export var vertical_velocity_gain = 0.1
+@export var bounce_vertical_velocity_gain = 1.25
 
 @export var bounce_speed = 100
 
@@ -13,7 +14,7 @@ class_name Mushroom
 var allow_horizontal_movement = false
 var vertical_speed = 0
 var bouncing: bool = false
-var bouncing_timer: float = 0.15
+var bouncing_timer: float = 0.30
 
 
 func _ready() -> void:
@@ -30,12 +31,13 @@ func _process(delta: float) -> void:
 	
 	if bouncing:
 		bouncing_timer -= delta
-
-		position.y -= delta * bounce_speed
+		vertical_speed = lerpf(vertical_speed, max_vertical_speed, bounce_vertical_velocity_gain)
+		position.y -= delta * vertical_speed
 
 		if bouncing_timer <= 0:
-			bouncing_timer = 1.0
+			bouncing_timer = .30
 			bouncing = false
+			vertical_speed = 0
 
 
 
