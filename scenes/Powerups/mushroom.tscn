@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4dccuethu65p"]
+[gd_scene load_steps=6 format=3 uid="uid://b4dccuethu65p"]
 
 [ext_resource type="Script" path="res://scripts/Powerups/mushroom.gd" id="1_wbk41"]
 [ext_resource type="Texture2D" uid="uid://3giejgxx1jgl" path="res://assets/sprites/Mushroom.png" id="1_yo1aa"]
+[ext_resource type="AudioStream" uid="uid://camlex2kf6fp0" path="res://assets/sounds/smb_powerup_appears.wav" id="3_5dgh4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0hnwu"]
 size = Vector2(16, 17.25)
@@ -10,6 +11,8 @@ size = Vector2(16, 17.25)
 size = Vector2(10, 10)
 
 [node name="Mushroom" type="Area2D"]
+collision_layer = 9
+collision_mask = 9
 script = ExtResource("1_wbk41")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -23,3 +26,8 @@ shape = SubResource("RectangleShape2D_0hnwu")
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_e1l7g")
 target_position = Vector2(0, 1)
+collision_mask = 15
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_5dgh4")
+autoplay = true

@@ -8,6 +8,10 @@
 
 config_version=5
 
+[animation]
+
+warnings/check_invalid_track_paths=false
+
 [application]
 
 config/name="SuperMarioClone"
@@ -54,6 +58,7 @@ Down={
 2d_physics/layer_1="Default"
 2d_physics/layer_2="Player"
 2d_physics/layer_3="Enemy"
+2d_physics/layer_4="Powerup"
 
 [rendering]
 

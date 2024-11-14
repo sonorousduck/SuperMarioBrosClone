@@ -1,11 +1,11 @@
 extends CharacterBody2D
 
-
+class_name Goomba
 # Called when the node enters the scene tree for the first time.
 # func _ready() -> void:
 # 	pass # Replace with function body.
 
-const SPEED: int = 60
+@export var SPEED: int = 60
 var direction: int = -1
 var isSquished: bool = false
 
@@ -59,6 +59,9 @@ func _physics_process(delta: float) -> void:
 
 	velocity.x = direction * SPEED
 	move_and_slide()
+
+func die_from_hit() -> void:
+	queue_free()
 
 	# for i in range(()):
 	# 	var collision = get_slide_collision(i)

@@ -4,8 +4,9 @@ extends StaticBody2D
 class_name Block
 
 const MUSHROOM = preload("res://scenes/Powerups/mushroom.tscn")
+const COIN = preload("res://scenes/moving_coin.tscn")
 
-@onready var ray_cast_2d = $RayCast2D as RayCast2D
+@onready var shape_cast = $RayCast2D as ShapeCast2D
 
 @export var containing_item: Item.ItemType = Item.ItemType.COIN;
 @export var invisible: bool = false
@@ -22,7 +23,10 @@ func _ready() -> void:
 	startingFrame = randi_range(0, frame_count - 1)
 	animated_sprite.set_frame_and_progress(startingFrame, 0.0)
 
-
+func spawn_coin():
+	var coin = COIN.instantiate()
+	coin.global_position = global_position
+	get_tree().root.add_child(coin)
 
 func spawn_shroom():
 	var mushroom = MUSHROOM.instantiate()
@@ -41,12 +45,12 @@ func bump(player_mode):
 	var bump_tween = get_tree().create_tween()
 	bump_tween.tween_property(self, "position", position + Vector2(0, -5), .12)
 	bump_tween.chain().tween_property(self, "position", position, .12)
-	check_for_enemy_collision()
+	check_for_collision()
 
 
 	match containing_item:
 		Item.ItemType.COIN:
-			pass
+			spawn_coin()
 		Item.ItemType.MUSHROOM:
 			spawn_shroom()
 		Item.ItemType.ONE_UP:
@@ -56,7 +60,15 @@ func bump(player_mode):
 	
 	make_empty()
 
-func check_for_enemy_collision():
-	if ray_cast_2d.is_colliding() && ray_cast_2d.get_collider() is Enemy:
-		var enemy = ray_cast_2d.get_collider() as Enemy
-		enemy.die_from_hit()
+func check_for_collision():
+	if shape_cast.is_colliding():
+		for i in range(shape_cast.get_collision_count()):
+			var collision = shape_cast.get_collider(i)
+			print("COLLDING!")
+
+			if (collision is Goomba):
+				var enemy = collision as Goomba
+				enemy.die_from_hit()
+			if (collision is Mushroom):
+				var mushroom = collision as Mushroom
+				mushroom.bump()

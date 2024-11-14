@@ -21,7 +21,7 @@ const BIG_MARIO_COLLISION_SHAPE = preload("res://Resources/CollisionShapes/BigMa
 enum PlayerMode {
 	SMALL,
 	BIG,
-	SHOOTING
+	FIRE
 }
 
 var player_mode = PlayerMode.SMALL
@@ -64,6 +64,8 @@ func _physics_process(delta: float) -> void:
 
 		if (player_mode == PlayerMode.SMALL):
 			animation_player.play("small_jump")
+		else:
+			animation_player.play("big_jump")
 
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 		velocity.y *= 0.5;

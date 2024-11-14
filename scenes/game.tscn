@@ -91,6 +91,10 @@ shape = SubResource("WorldBoundaryShape2D_0568n")
 [node name="Goomba" parent="." instance=ExtResource("4_q2vk4")]
 position = Vector2(264, 4)
 
+[node name="Goomba2" parent="." instance=ExtResource("4_q2vk4")]
+position = Vector2(233, -170)
+SPEED = 5
+
 [node name="QuestionBlocks" type="Node" parent="."]
 
 [node name="QuestionBlock" parent="QuestionBlocks" instance=ExtResource("5_srt2n")]
