@@ -10,11 +10,18 @@ const MUSHROOM = preload("res://scenes/Powerups/mushroom.tscn")
 @export var containing_item: Item.ItemType = Item.ItemType.COIN;
 @export var invisible: bool = false
 
-@onready var animated_sprite = $Sprite
+@export var frame_count = 4;
 
+@onready var animated_sprite = $Sprite
+var startingFrame: int = 0
 var is_empty = false;
 # func _ready() -> void:
 # 	# Set invisible
+
+func _ready() -> void:
+	startingFrame = randi_range(0, frame_count - 1)
+	animated_sprite.set_frame_and_progress(startingFrame, 0.0)
+
 
 
 func spawn_shroom():

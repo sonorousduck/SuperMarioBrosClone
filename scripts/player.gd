@@ -10,9 +10,13 @@ const RUN_SPEED_DAMPING = 0.5
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 
+const SMALL_MARIO_COLLISION_SHAPE = preload("res://Resources/CollisionShapes/SmallMario.tres")
+const BIG_MARIO_COLLISION_SHAPE = preload("res://Resources/CollisionShapes/BigMario.tres")
+
 @onready var animation_player = $AnimationPlayer
-
-
+@onready var area_2d = $Area2D
+@onready var collisionShape2D = $CollisionShape2D
+@onready var animated_sprite = $AnimatedSprite
 
 enum PlayerMode {
 	SMALL,
@@ -33,13 +37,15 @@ func handle_movement_collision(collision: KinematicCollision2D):
 		if roundf(collision_angle) == 180:
 			(collision.get_collider() as Brick).bump(player_mode)
 		
-	# if (collision.get_collider() is Pipe):
-	# 	pass
+	if (collision.get_collider() is Pipe):
+		var pipe = collision.get_collider() as Pipe
+		var collision_angle = rad_to_deg(collision.get_angle())
+		if (roundf(collision_angle) == 0 && Input.is_action_just_pressed("Down")) && pipe.enterable:
+			print("TODO: Go into pipe, if possible")
 
 # This function is used when the player kills an enemy
 func bounce():
 	velocity.y = BOUNCE_VELOCITY
-	# move_and_slide()
 
 
 func _physics_process(delta: float) -> void:
@@ -71,6 +77,10 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED * delta)
 
 
+	
+	animated_sprite.trigger_animation(velocity, direction, player_mode)
+
+
 	var collision = get_last_slide_collision()
 	if collision != null:
 		handle_movement_collision(collision)
@@ -78,3 +88,47 @@ func _physics_process(delta: float) -> void:
 
 
 	move_and_slide()
+
+
+func handle_mushroom_collision():
+	if player_mode == PlayerMode.SMALL:
+		set_physics_process(false)
+		animated_sprite.play("small_to_big")
+		animation_player.play("small_to_big")
+		
+		#set_collision_shapes(true)
+
+func handle_enemy_collision():
+	# TODO: Check health
+	# Reduce down if not big or flower
+
+	# Tween for death and swap to death animation
+	pass
+
+func handle_flower_collision():
+	pass
+
+func handle_small_to_big():
+	if (player_mode == PlayerMode.SMALL):
+		player_mode = PlayerMode.BIG
+	else:
+		player_mode = PlayerMode.SMALL
+
+func _on_area_2d_area_entered(area:Area2D) -> void:
+	if area is Mushroom:
+		handle_mushroom_collision()
+		area.queue_free()
+	elif area is Enemy:
+		handle_enemy_collision()
+	# elif area is Flower:
+		# handle_flower_collision()
+
+
+	pass # Replace with function body.
+
+
+
+#func set_collision_shapes(is_small: bool):
+	#var collision_shape = SMALL_MARIO_COLLISION_SHAPE if is_small else BIG_MARIO_COLLISION_SHAPE
+	#area_2d.set_deferred("shape", collision_shape)
+	#collisionShape2D.set_deferred("shape", collision_shape)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://bif5dei2tr45i"]
+[gd_scene load_steps=15 format=4 uid="uid://bif5dei2tr45i"]
 
 [ext_resource type="PackedScene" uid="uid://vttpyngfbhq6" path="res://scenes/player.tscn" id="1_cnpoc"]
 [ext_resource type="Texture2D" uid="uid://yb3kmstn5q5i" path="res://assets/sprites/World1-1.png" id="2_dvqk5"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://kaa7y836vypw" path="res://scenes/QuestionBlock.tscn" id="5_srt2n"]
 [ext_resource type="PackedScene" uid="uid://dlbda1vjx8nii" path="res://scenes/brick.tscn" id="6_cj5b3"]
 [ext_resource type="PackedScene" uid="uid://bddj1h1223p6k" path="res://scenes/music.tscn" id="7_vx8jp"]
+[ext_resource type="PackedScene" uid="uid://dt711hjve7t3l" path="res://scenes/Pipe.tscn" id="8_rg4p6"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_edej0"]
 texture = ExtResource("2_dvqk5")
@@ -36,19 +37,13 @@ texture = ExtResource("2_dvqk5")
 2:3/0 = 0
 3:3/0 = 0
 0:4/0 = 0
-0:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:4/0 = 0
-1:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 2:4/0 = 0
 3:4/0 = 0
 0:3/0 = 0
-0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:3/0 = 0
-1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 0:2/0 = 0
-0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:2/0 = 0
-1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 
 [sub_resource type="TileSet" id="TileSet_7pn36"]
 physics_layer_0/collision_layer = 1
@@ -59,6 +54,15 @@ custom_data_layer_1/type = 2
 sources/0 = SubResource("TileSetAtlasSource_edej0")
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0568n"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j0dmq"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_are26"]
+size = Vector2(32, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_14pww"]
+size = Vector2(32, 64)
 
 [node name="Game" type="Node2D"]
 
@@ -201,3 +205,40 @@ position = Vector2(2328, -40)
 position = Vector2(2360, -40)
 
 [node name="Music" parent="." instance=ExtResource("7_vx8jp")]
+
+[node name="Pipes" type="Node2D" parent="."]
+position = Vector2(304, -8)
+
+[node name="SmallPipe" parent="Pipes" instance=ExtResource("8_rg4p6")]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Pipes/SmallPipe"]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_j0dmq")
+
+[node name="SmallPipe2" parent="Pipes" instance=ExtResource("8_rg4p6")]
+position = Vector2(1936, 0)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Pipes/SmallPipe2"]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_j0dmq")
+
+[node name="SmallPipe3" parent="Pipes" instance=ExtResource("8_rg4p6")]
+position = Vector2(2128, 0)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Pipes/SmallPipe3"]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_j0dmq")
+
+[node name="MediumPipe" parent="Pipes" instance=ExtResource("8_rg4p6")]
+position = Vector2(96, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pipes/MediumPipe"]
+shape = SubResource("RectangleShape2D_are26")
+
+[node name="LargePipe" parent="Pipes" instance=ExtResource("8_rg4p6")]
+position = Vector2(192, -25)
+enterable = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pipes/LargePipe"]
+position = Vector2(0, 17)
+shape = SubResource("RectangleShape2D_14pww")

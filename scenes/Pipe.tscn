@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dt711hjve7t3l"]
+
+[ext_resource type="Script" path="res://scripts/pipe.gd" id="1_04pr8"]
+
+[node name="Pipe" type="StaticBody2D"]
+script = ExtResource("1_04pr8")
