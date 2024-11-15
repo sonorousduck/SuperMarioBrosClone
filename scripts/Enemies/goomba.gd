@@ -25,8 +25,8 @@ func handle_animation_player():
 	animation_player.play("death")
 
 func handle_non_squish_death():
-	sprite.rotate(deg_to_rad(180))
 	animation_player.play("death_by_shell")
+	sprite.rotation = (deg_to_rad(180))
 	var spawn_tween = get_tree().create_tween()
 	spawn_tween.tween_property(self, "position", position + Vector2(0, -16), 0.2)
 	spawn_tween.tween_property(self, "position", position + Vector2(0, 32), 0.2)
@@ -40,25 +40,18 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if raycast_right.is_colliding():
 		var collider = raycast_right.get_collider()
-		if collider is Koopa:
-			if (collider as Koopa).moving:
-				handle_non_squish_death()
-			
-		
-
-		# if collider and collider.collision_layer & (1 << 2) != 0:
-		direction = -1
-		sprite.flip_h = true
+		if (collider is Player):
+			(collider as Player).handle_enemy_collision()
+		else:
+			direction = -1
+			sprite.flip_h = true
 	if raycast_left.is_colliding():
 		var collider = raycast_left.get_collider()
-		if collider is Koopa:
-			if (collider as Koopa).moving:
-				handle_non_squish_death()
-		# if collider and collider.collision_layer & (1 << 2) != 0:
-		# 	direction = -1
-		# 	sprite.flip_h = true
-		direction = 1
-		sprite.flip_h = false
+		if (collider is Player):
+			(collider as Player).handle_enemy_collision()
+		else:
+			direction = 1
+			sprite.flip_h = false
 
 	# Handle that you jumped on the enemy's head
 	# if raycast_top.is_colliding():

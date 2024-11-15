@@ -15,6 +15,7 @@ var timer: float = 0.0
 @onready var sprite = $AnimatedSprite as AnimatedSprite2D
 @onready var animation_player = $AnimationPlayer
 @onready var squished = $Area2D
+@onready var death_sound: AudioStreamPlayer2D = $DeathSound
 
 
 func kick_shell(angle: float):
@@ -23,7 +24,7 @@ func kick_shell(angle: float):
 			direction = 1
 		else:
 			direction = -1
-		
+		death_sound.play()
 		moving = true
 
 
@@ -60,31 +61,35 @@ func _process(delta: float) -> void:
 
 	if raycast_right.is_colliding():
 		var collider = raycast_right.get_collider()
-		
+
 		if (in_shell && !moving && collider is Player):
 			moving = true
 			kick_shell(0)
 		if (in_shell):
 			if (collider is Pipe):
 				direction = -1
-				sprite.flip_h = true
+				sprite.flip_h = false
+			elif (moving && collider is Goomba):
+				(collider as Goomba).handle_non_squish_death()
 		else:
 			direction = -1
-			sprite.flip_h = true
+			sprite.flip_h = false
 	if raycast_left.is_colliding():
 		var collider = raycast_left.get_collider()
-		
+
 		if (in_shell && !moving && collider is Player):
 			moving = true
 			kick_shell(91)
-		
+
 		if (in_shell):
 			if (collider is Pipe):
 				direction = 1
-				sprite.flip_h = false
+				sprite.flip_h = true
+			elif (moving && collider is Goomba):
+				(collider as Goomba).handle_non_squish_death()
 		else:
 			direction = 1
-			sprite.flip_h = false
+			sprite.flip_h = true
 
 	# Handle that you jumped on the enemy's head
 	# if raycast_top.is_colliding():
@@ -94,7 +99,7 @@ func _process(delta: float) -> void:
 	# 		if collided_with.has_method("bounce"):
 	# 			collided_with.bounce()
 	# 			isSquished = true
-		
+
 
 func _physics_process(delta: float) -> void:
 	if in_shell:

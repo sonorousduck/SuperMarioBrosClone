@@ -82,7 +82,7 @@ position_smoothing_enabled = true
 position_smoothing_speed = 2.0
 
 [node name="Goomba" parent="." instance=ExtResource("4_q2vk4")]
-position = Vector2(264, 4)
+position = Vector2(147, 5)
 
 [node name="Goomba2" parent="." instance=ExtResource("4_q2vk4")]
 position = Vector2(233, -170)
@@ -241,7 +241,7 @@ position = Vector2(0, 17)
 shape = SubResource("RectangleShape2D_14pww")
 
 [node name="Koopa" parent="." instance=ExtResource("9_24jtu")]
-position = Vector2(168, 2)
+position = Vector2(77, 4)
 
 [node name="Killzone" parent="." instance=ExtResource("3_0viq8")]
-position = Vector2(44, 69)
+position = Vector2(47, 203)

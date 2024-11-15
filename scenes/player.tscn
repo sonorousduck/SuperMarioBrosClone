@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://vttpyngfbhq6"]
+[gd_scene load_steps=21 format=3 uid="uid://vttpyngfbhq6"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_42xyc"]
 [ext_resource type="Texture2D" uid="uid://d16672peta822" path="res://assets/sprites/MarioRight.png" id="1_p86pa"]
@@ -10,6 +10,8 @@
 [ext_resource type="Shape2D" uid="uid://dmfiiy444d2ti" path="res://Resources/CollisionShapes/BigMario.tres" id="7_0mc5o"]
 [ext_resource type="AudioStream" uid="uid://cewmxy3cym6tb" path="res://assets/sounds/smb_powerup.wav" id="9_mns7u"]
 [ext_resource type="AudioStream" uid="uid://dpybg3ajvecmf" path="res://assets/sounds/smb_jump-super.wav" id="10_mmo3s"]
+[ext_resource type="AudioStream" uid="uid://cpjjywwx6j8r8" path="res://assets/sounds/smb_mariodie.wav" id="11_ly77i"]
+[ext_resource type="AudioStream" uid="uid://nmuwmdl6maw7" path="res://assets/sounds/smb_pipe.wav" id="12_qfvuy"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_guph0"]
 animations = [{
@@ -129,6 +131,42 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Audio/GameOverMusic:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("CollisionShape2D:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_xws8u"]
 resource_name = "big_jump"
@@ -228,10 +266,72 @@ tracks/4/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_x1a4o"]
+resource_name = "death"
+length = 5.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Audio/GameOverMusic:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0666667, 4.96667),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"handle_death_tween"
+}, {
+"args": [],
+"method": &"handle_death"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_n42sq"]
+resource_name = "big_to_small"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g0erh"]
 _data = {
 "RESET": SubResource("Animation_8pqmd"),
 "big_jump": SubResource("Animation_xws8u"),
+"big_to_small": SubResource("Animation_n42sq"),
+"death": SubResource("Animation_x1a4o"),
 "small_jump": SubResource("Animation_5cs7t"),
 "small_to_big": SubResource("Animation_ug1vh")
 }
@@ -275,6 +375,12 @@ stream = ExtResource("9_mns7u")
 
 [node name="BigJumpSFX" type="AudioStreamPlayer2D" parent="Audio"]
 stream = ExtResource("10_mmo3s")
+
+[node name="GameOverMusic" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("11_ly77i")
+
+[node name="LoseLevelPowerup" type="AudioStreamPlayer2D" parent="Audio"]
+stream = ExtResource("12_qfvuy")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_animated_sprite_animation_finished"]

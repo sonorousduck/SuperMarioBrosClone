@@ -17,6 +17,7 @@ const BIG_MARIO_COLLISION_SHAPE = preload("res://Resources/CollisionShapes/BigMa
 @onready var area_2d = $Area2D
 @onready var collisionShape2D = $CollisionShape2D
 @onready var animated_sprite = $AnimatedSprite
+@onready var music: AudioStreamPlayer2D = $"../Music"
 
 enum PlayerMode {
 	SMALL,
@@ -103,9 +104,17 @@ func handle_mushroom_collision():
 func handle_enemy_collision():
 	# TODO: Check health
 	# Reduce down if not big or flower
+	match (player_mode):
+		PlayerMode.SMALL:
+			animation_player.play("death")
+		PlayerMode.BIG:
+			handle_small_to_big()
+
+		PlayerMode.FIRE:
+			handle_small_to_big()
+
 
 	# Tween for death and swap to death animation
-	pass
 
 func handle_flower_collision():
 	pass
@@ -128,6 +137,15 @@ func _on_area_2d_area_entered(area:Area2D) -> void:
 
 	pass # Replace with function body.
 
+func handle_death_tween():
+	music.stop()
+	var spawn_tween = get_tree().create_tween()
+	spawn_tween.tween_property(self, "position", position + Vector2(0, -16), 0.4)
+	spawn_tween.tween_property(self, "position", position + Vector2(0, 180), 0.4)
+	spawn_tween.tween_property(self, "position", position + Vector2(0, 200), 4)
+
+func handle_death():
+	get_tree().reload_current_scene()
 
 
 #func set_collision_shapes(is_small: bool):

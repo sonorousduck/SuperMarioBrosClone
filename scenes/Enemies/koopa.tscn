@@ -216,17 +216,17 @@ shape = ExtResource("2_ujtvw")
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -9)
 sprite_frames = SubResource("SpriteFrames_y0gpx")
-animation = &"walk"
+animation = &"in_shell"
 autoplay = "walk"
 
 [node name="RayCastRight" type="RayCast2D" parent="."]
 position = Vector2(0, -7)
-target_position = Vector2(9, 0)
+target_position = Vector2(10, 1)
 collision_mask = 7
 
 [node name="RayCastLeft" type="RayCast2D" parent="."]
 position = Vector2(0, -7)
-target_position = Vector2(-9, 0)
+target_position = Vector2(-10, 1)
 collision_mask = 7
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
