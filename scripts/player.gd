@@ -159,6 +159,7 @@ func _on_area_2d_area_entered(area:Area2D) -> void:
 
 func handle_death_tween():
 	music.stop()
+	animated_sprite.play("death")
 	var spawn_tween = get_tree().create_tween()
 	spawn_tween.tween_property(self, "position", position + Vector2(0, -16), 0.4)
 	spawn_tween.tween_property(self, "position", position + Vector2(0, 180), 0.4)

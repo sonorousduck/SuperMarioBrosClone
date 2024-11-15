@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dypeihxm7fq8e"]
+[gd_scene load_steps=3 format=3 uid="uid://dypeihxm7fq8e"]
 
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_vf3kb"]
+[ext_resource type="LabelSettings" uid="uid://sxf6u33opmog" path="res://Resources/Fonts/PixelFont.tres" id="2_m45m6"]
 
 [node name="UI" type="CanvasLayer"]
 script = ExtResource("1_vf3kb")
@@ -29,14 +30,94 @@ theme_override_constants/margin_bottom = 32
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer"]
+[node name="ScoreVBox" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="ScoreLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="ScoreLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/ScoreVBox"]
 layout_mode = 2
 text = "Score"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
-[node name="Score" type="Label" parent="Control/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Score" type="Label" parent="Control/MarginContainer/HBoxContainer/ScoreVBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Score"
+text = "0"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+
+[node name="CoinsVBox" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CoinLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/CoinsVBox"]
+layout_mode = 2
+text = "Coins
+"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Coins" type="Label" parent="Control/MarginContainer/HBoxContainer/CoinsVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+
+[node name="WorldVBox" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WorldLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/WorldVBox"]
+layout_mode = 2
+text = "World"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="World" type="Label" parent="Control/MarginContainer/HBoxContainer/WorldVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = " 1-1"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+
+[node name="TimeVBox" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TimeLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/TimeVBox"]
+layout_mode = 2
+text = "Time"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Time" type="Label" parent="Control/MarginContainer/HBoxContainer/TimeVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "400"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+
+[node name="LivesVBox" type="VBoxContainer" parent="Control/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LivesLabel" type="Label" parent="Control/MarginContainer/HBoxContainer/LivesVBox"]
+layout_mode = 2
+text = "Lives"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Lives" type="Label" parent="Control/MarginContainer/HBoxContainer/LivesVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "3"
+label_settings = ExtResource("2_m45m6")
+horizontal_alignment = 1

@@ -1,13 +1,16 @@
-[gd_scene load_steps=21 format=3 uid="uid://vttpyngfbhq6"]
+[gd_scene load_steps=24 format=3 uid="uid://vttpyngfbhq6"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_42xyc"]
 [ext_resource type="Texture2D" uid="uid://d16672peta822" path="res://assets/sprites/MarioRight.png" id="1_p86pa"]
 [ext_resource type="Texture2D" uid="uid://blhs0v3hyig60" path="res://assets/sprites/BigMario.png" id="2_l7w34"]
 [ext_resource type="AudioStream" uid="uid://bvbanx5kyjb50" path="res://assets/sounds/smb_jump-small.wav" id="3_0egty"]
 [ext_resource type="Texture2D" uid="uid://6ee4po186g61" path="res://assets/sprites/FireMario.png" id="3_kfi05"]
+[ext_resource type="Texture2D" uid="uid://wvihkvatbsed" path="res://assets/sprites/BigMarioSliding.png" id="3_vbyqh"]
+[ext_resource type="Texture2D" uid="uid://t4hwc4syl0rf" path="res://assets/sprites/DeadMario.png" id="4_hc3vu"]
 [ext_resource type="Script" path="res://scripts/PlayerAnimatedSprite.gd" id="5_bk5n6"]
 [ext_resource type="Shape2D" uid="uid://dg14vy5ltbjf4" path="res://Resources/CollisionShapes/SmallMario.tres" id="5_xysy2"]
 [ext_resource type="Shape2D" uid="uid://dmfiiy444d2ti" path="res://Resources/CollisionShapes/BigMario.tres" id="7_0mc5o"]
+[ext_resource type="Texture2D" uid="uid://bykdryxb6n0hl" path="res://assets/sprites/SmallMarioSliding.png" id="7_it158"]
 [ext_resource type="AudioStream" uid="uid://cewmxy3cym6tb" path="res://assets/sounds/smb_powerup.wav" id="9_mns7u"]
 [ext_resource type="AudioStream" uid="uid://dpybg3ajvecmf" path="res://assets/sounds/smb_jump-super.wav" id="10_mmo3s"]
 [ext_resource type="AudioStream" uid="uid://cpjjywwx6j8r8" path="res://assets/sounds/smb_mariodie.wav" id="11_ly77i"]
@@ -21,6 +24,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"big_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_vbyqh")
+}],
+"loop": true,
+"name": &"big_slide",
 "speed": 5.0
 }, {
 "frames": [{
@@ -54,6 +65,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("4_hc3vu")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("3_kfi05")
 }],
 "loop": true,
@@ -66,6 +85,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"small_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_it158")
+}],
+"loop": true,
+"name": &"small_slide",
 "speed": 5.0
 }, {
 "frames": [{
@@ -224,6 +251,130 @@ tracks/0/keys = {
 "values": [true]
 }
 
+[sub_resource type="Animation" id="Animation_n42sq"]
+resource_name = "big_to_small"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:shape")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_xysy2")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/CollisionShape2D:shape")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_xysy2")]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatedSprite")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"reset_player_properties"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Audio/LoseLevelPowerup:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"handle_small_to_big"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_x1a4o"]
+resource_name = "death"
+length = 5.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Audio/GameOverMusic:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0666667, 4.96667),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"handle_death_tween"
+}, {
+"args": [],
+"method": &"handle_death"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
 [sub_resource type="Animation" id="Animation_5cs7t"]
 resource_name = "small_jump"
 length = 0.5
@@ -307,130 +458,6 @@ tracks/4/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_x1a4o"]
-resource_name = "death"
-length = 5.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Audio/GameOverMusic:playing")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.0666667, 4.96667),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [],
-"method": &"handle_death_tween"
-}, {
-"args": [],
-"method": &"handle_death"
-}]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CollisionShape2D:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Area2D/CollisionShape2D:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-
-[sub_resource type="Animation" id="Animation_n42sq"]
-resource_name = "big_to_small"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CollisionShape2D:shape")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("5_xysy2")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Area2D/CollisionShape2D:shape")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("5_xysy2")]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatedSprite")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"reset_player_properties"
-}]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Audio/LoseLevelPowerup:playing")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath(".")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"handle_small_to_big"
-}]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g0erh"]
 _data = {
 "RESET": SubResource("Animation_8pqmd"),
@@ -449,7 +476,7 @@ script = ExtResource("1_42xyc")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_guph0")
-animation = &"big_to_small"
+animation = &"small_slide"
 autoplay = "small_idle"
 script = ExtResource("5_bk5n6")
 
