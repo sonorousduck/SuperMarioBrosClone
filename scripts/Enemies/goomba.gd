@@ -15,9 +15,11 @@ var isSquished: bool = false
 @onready var sprite = $Sprite2D as AnimatedSprite2D
 @onready var animation_player = $AnimationPlayer
 @onready var squished = $Area2D
+@onready var game_manager: GameManager = %GameManager
 
 func goomba_die():
 	sprite.play("squished")
+	game_manager.add_points(100)
 
 
 func handle_animation_player():

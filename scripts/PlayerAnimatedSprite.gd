@@ -4,7 +4,7 @@ extends AnimatedSprite2D
 class_name PlayerAnimatedSprite
 var frame_count = 0
 # Called when the node enters the scene tree for the first time.
-func trigger_animation(velocity: Vector2, direction: int, player_mode: Player.PlayerMode):
+func trigger_animation(_velocity: Vector2, _direction: int, _player_mode: Player.PlayerMode):
 	# var animation_prefix = Player.PlayerMode.keys()[player_mode].to_snake_case()
 	
 	# if not get_parent().is_on_floor():
@@ -28,16 +28,12 @@ func trigger_animation(velocity: Vector2, direction: int, player_mode: Player.Pl
 	# 		play("%s_idle" % animation_prefix)
 	pass
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _on_animated_sprite_animation_finished() -> void:
 	if animation == "small_to_big":
 		reset_player_properties()
-		#get_parent().player_mode = Player.PlayerMode.BIG if get_parent().player_mode == Player.PlayerMode.SMALL else Player.PlayerMode.SMALL
-
-
+		
+	if animation == "big_to_small":
+		reset_player_properties()
 
 func reset_player_properties():
 	offset = Vector2.ZERO
@@ -51,11 +47,14 @@ func _on_frame_changed() -> void:
 		frame_count += 1
 
 		if frame_count % 2 == 1:
-			offset = Vector2(0, 0 if player_mode == Player.PlayerMode.BIG else -6)
+			offset = Vector2(0, 0 if player_mode == Player.PlayerMode.BIG else -8)
 		else:
 			offset = Vector2(0, 8 if player_mode == Player.PlayerMode.BIG else 0)
+	if animation == "big_to_small":
+		var player_mode = get_parent().player_mode
+		frame_count += 1
 
-
-#func _on_animation_finished() -> void:
-		#if animation == "small_to_big":
-			#reset_player_properties() # Replace with function body.
+		if frame_count % 2 == 1:
+			offset = Vector2(0, 0 if player_mode == Player.PlayerMode.BIG else -8)
+		else:
+			offset = Vector2(0, 8 if player_mode == Player.PlayerMode.BIG else 0)

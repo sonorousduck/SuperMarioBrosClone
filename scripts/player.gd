@@ -18,6 +18,13 @@ const BIG_MARIO_COLLISION_SHAPE = preload("res://Resources/CollisionShapes/BigMa
 @onready var collisionShape2D = $CollisionShape2D
 @onready var animated_sprite = $AnimatedSprite
 @onready var music: AudioStreamPlayer2D = $"../Music"
+@onready var invincibility_timer: Timer = $InvincibilityTimer
+@onready var game_manager: GameManager = %GameManager
+
+var point_bonus = 0
+
+var invincible = false
+
 
 enum PlayerMode {
 	SMALL,
@@ -46,13 +53,17 @@ func handle_movement_collision(collision: KinematicCollision2D):
 
 # This function is used when the player kills an enemy
 func bounce():
-	velocity.y = BOUNCE_VELOCITY
+	velocity.y = BOUNCE_VELOCITY	
+	
 
 
 func _physics_process(delta: float) -> void:
+	print(player_mode)
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
+	else:
+		point_bonus = 0
 	
 
 	if Input.is_action_just_pressed("esc"):
@@ -102,16 +113,20 @@ func handle_mushroom_collision():
 		#set_collision_shapes(true)
 
 func handle_enemy_collision():
+	if invincible:
+		return
 	# TODO: Check health
 	# Reduce down if not big or flower
 	match (player_mode):
 		PlayerMode.SMALL:
 			animation_player.play("death")
 		PlayerMode.BIG:
-			handle_small_to_big()
+			set_physics_process(false)
+			animated_sprite.play("big_to_small")
+			animation_player.play("big_to_small")
 
 		PlayerMode.FIRE:
-			handle_small_to_big()
+			set_physics_process(false)
 
 
 	# Tween for death and swap to death animation
@@ -122,8 +137,13 @@ func handle_flower_collision():
 func handle_small_to_big():
 	if (player_mode == PlayerMode.SMALL):
 		player_mode = PlayerMode.BIG
+		animated_sprite.play("big_idle")
 	else:
 		player_mode = PlayerMode.SMALL
+		animated_sprite.play("small_idle")
+		
+	invincible = true
+	invincibility_timer.start()
 
 func _on_area_2d_area_entered(area:Area2D) -> void:
 	if area is Mushroom:
@@ -152,3 +172,7 @@ func handle_death():
 	#var collision_shape = SMALL_MARIO_COLLISION_SHAPE if is_small else BIG_MARIO_COLLISION_SHAPE
 	#area_2d.set_deferred("shape", collision_shape)
 	#collisionShape2D.set_deferred("shape", collision_shape)
+
+
+func _on_invincibility_timer_timeout() -> void:
+	invincible = false # Replace with function body.

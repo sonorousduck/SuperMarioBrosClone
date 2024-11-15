@@ -253,6 +253,7 @@ size = Vector2(16, 8)
 collision_layer = 4
 collision_mask = 7
 script = ExtResource("1_maja0")
+SPEED = 40
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -5.5)
