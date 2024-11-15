@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dy054rt33fipy"]
+[gd_scene load_steps=16 format=3 uid="uid://dy054rt33fipy"]
 
 [ext_resource type="Texture2D" uid="uid://cwgw6nclxpovh" path="res://assets/sprites/KoopaShell.png" id="1_0d64o"]
 [ext_resource type="Script" path="res://scripts/Enemies/koopa.gd" id="1_wehw3"]
@@ -6,9 +6,7 @@
 [ext_resource type="Shape2D" uid="uid://peurx1yls7qs" path="res://Resources/CollisionShapes/koopa_out_of_shell.tres" id="2_ujtvw"]
 [ext_resource type="Script" path="res://scripts/Enemies/top_enemy_collider.gd" id="3_x6bk3"]
 [ext_resource type="AudioStream" uid="uid://dst6dbuwdv334" path="res://assets/sounds/smb_kick.wav" id="4_424a5"]
-[ext_resource type="Texture2D" uid="uid://beogot4vkimde" path="res://assets/sprites/GoombaRight.png" id="5_i06s1"]
 [ext_resource type="Shape2D" uid="uid://cvuoyfatv238s" path="res://Resources/CollisionShapes/koopa_in_shell.tres" id="5_t6gat"]
-[ext_resource type="Texture2D" uid="uid://cmg18ydpnafgh" path="res://assets/sprites/SquishedGoomba.png" id="6_arxmd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p4iya"]
 atlas = ExtResource("2_3j0s2")
@@ -57,26 +55,77 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/path = NodePath("CollisionShape2D:shape")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("5_i06s1")]
+"values": [ExtResource("2_ujtvw")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("CollisionShape2D:shape")
+tracks/2/path = NodePath("Area2D/CollisionShape2D:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_ujtvw")]
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_erwgg"]
+resource_name = "death_by_shell"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeathSound:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_x8dqu"]
@@ -94,25 +143,13 @@ tracks/0/keys = {
 "update": 1,
 "values": [true]
 }
-tracks/1/type = "value"
+tracks/1/type = "method"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("6_arxmd")]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -120,22 +157,47 @@ tracks/2/keys = {
 "method": &"enter_shell"
 }]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:shape")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_t6gat")]
+}
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("CollisionShape2D:shape")
+tracks/3/path = NodePath("CollisionShape2D:disabled")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("5_t6gat")]
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_f57r7"]
 _data = {
 "RESET": SubResource("Animation_4maxp"),
+"death_by_shell": SubResource("Animation_erwgg"),
 "shell": SubResource("Animation_x8dqu")
 }
 
@@ -148,7 +210,7 @@ collision_mask = 7
 script = ExtResource("1_wehw3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -3.5)
+position = Vector2(0, -4.5)
 shape = ExtResource("2_ujtvw")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]

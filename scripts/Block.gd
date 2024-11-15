@@ -64,11 +64,12 @@ func check_for_collision():
 	if shape_cast.is_colliding():
 		for i in range(shape_cast.get_collision_count()):
 			var collision = shape_cast.get_collider(i)
-			print("COLLDING!")
 
 			if (collision is Goomba):
 				var enemy = collision as Goomba
 				enemy.die_from_hit()
+			if (collision is Koopa):
+				(collision as Koopa).die_from_hit()
 			if (collision is Mushroom):
 				var mushroom = collision as Mushroom
 				mushroom.bump()

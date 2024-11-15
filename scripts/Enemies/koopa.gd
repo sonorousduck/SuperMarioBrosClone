@@ -8,12 +8,13 @@ class_name Koopa
 var direction: int = -1
 var in_shell: bool = false
 var moving: bool = false
-
+var timer: float = 0.0
 
 @onready var raycast_right = $RayCastRight
 @onready var raycast_left = $RayCastLeft
 @onready var sprite = $AnimatedSprite as AnimatedSprite2D
 @onready var animation_player = $AnimationPlayer
+@onready var squished = $Area2D
 
 
 func kick_shell(angle: float):
@@ -28,26 +29,62 @@ func kick_shell(angle: float):
 
 
 func enter_shell():
-	if in_shell:
+	if (in_shell and timer <= 0.0 and !moving):
+		kick_shell(91)
+	elif (in_shell and timer <= 0.0 and moving):
 		moving = false
+		velocity.x = 0
 	else:
+		timer = 0.25
 		in_shell = true
+		sprite.play("in_shell")
 		animation_player.play("shell")
+		moving = false
+		velocity.x = 0
 
+func handle_non_squish_death():
+	sprite.rotate(deg_to_rad(180))
+	animation_player.play("death_by_shell")
+	var spawn_tween = get_tree().create_tween()
+	spawn_tween.tween_property(self, "position", position + Vector2(0, -16), 0.2)
+	spawn_tween.tween_property(self, "position", position + Vector2(0, 32), 0.2)
 
 func _ready() -> void:
-	var squished = get_node("Area2D")
 	squished.connect("squished", enter_shell)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if raycast_right.is_colliding():
+	if (timer > 0.0):
+		timer -= delta
 
-		direction = -1
-		sprite.flip_h = true
+
+	if raycast_right.is_colliding():
+		var collider = raycast_right.get_collider()
+		
+		if (in_shell && !moving && collider is Player):
+			moving = true
+			kick_shell(0)
+		if (in_shell):
+			if (collider is Pipe):
+				direction = -1
+				sprite.flip_h = true
+		else:
+			direction = -1
+			sprite.flip_h = true
 	if raycast_left.is_colliding():
-		direction = 1
-		sprite.flip_h = false
+		var collider = raycast_left.get_collider()
+		
+		if (in_shell && !moving && collider is Player):
+			moving = true
+			kick_shell(91)
+		
+		if (in_shell):
+			if (collider is Pipe):
+				direction = 1
+				sprite.flip_h = false
+		else:
+			direction = 1
+			sprite.flip_h = false
 
 	# Handle that you jumped on the enemy's head
 	# if raycast_top.is_colliding():
@@ -61,7 +98,8 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if in_shell:
-		velocity.x = direction * IN_SHELL_SPEED
+		if moving:
+			velocity.x = direction * IN_SHELL_SPEED
 	else:
 		velocity.x = direction * SPEED
 
@@ -71,4 +109,4 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func die_from_hit() -> void:
-	queue_free()
+	handle_non_squish_death()

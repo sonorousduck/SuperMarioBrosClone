@@ -5,7 +5,7 @@ class_name Player
 const SPEED = 200.0
 const GRAVITY_MODIFIER = 2
 const JUMP_VELOCITY = -350.0 
-const BOUNCE_VELOCITY = -200.0
+const BOUNCE_VELOCITY = -250.0
 const RUN_SPEED_DAMPING = 0.5
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 

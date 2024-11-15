@@ -50,3 +50,7 @@ func _process(delta: float) -> void:
 func bump() -> void:
 	bouncing = true
 
+
+func _on_body_entered(body: Node2D) -> void:
+	if (body is Pipe):
+		horizontal_speed *= -1

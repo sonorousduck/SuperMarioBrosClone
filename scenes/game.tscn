@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bif5dei2tr45i"]
+[gd_scene load_steps=15 format=4 uid="uid://bif5dei2tr45i"]
 
 [ext_resource type="PackedScene" uid="uid://vttpyngfbhq6" path="res://scenes/player.tscn" id="1_cnpoc"]
 [ext_resource type="Texture2D" uid="uid://yb3kmstn5q5i" path="res://assets/sprites/World1-1.png" id="2_dvqk5"]
@@ -54,8 +54,6 @@ custom_data_layer_1/name = "numCoins"
 custom_data_layer_1/type = 2
 sources/0 = SubResource("TileSetAtlasSource_edej0")
 
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0568n"]
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j0dmq"]
 size = Vector2(32, 32)
 
@@ -82,12 +80,6 @@ process_callback = 0
 limit_bottom = 60
 position_smoothing_enabled = true
 position_smoothing_speed = 2.0
-
-[node name="Killzone" parent="." instance=ExtResource("3_0viq8")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone"]
-position = Vector2(0, 69)
-shape = SubResource("WorldBoundaryShape2D_0568n")
 
 [node name="Goomba" parent="." instance=ExtResource("4_q2vk4")]
 position = Vector2(264, 4)
@@ -249,4 +241,7 @@ position = Vector2(0, 17)
 shape = SubResource("RectangleShape2D_14pww")
 
 [node name="Koopa" parent="." instance=ExtResource("9_24jtu")]
-position = Vector2(89, 12)
+position = Vector2(168, 2)
+
+[node name="Killzone" parent="." instance=ExtResource("3_0viq8")]
+position = Vector2(44, 69)

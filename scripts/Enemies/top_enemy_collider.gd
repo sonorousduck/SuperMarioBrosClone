@@ -18,7 +18,6 @@ func _on_body_entered(body:Node2D) -> void:
 	if (body.has_method("bounce")):
 		body.bounce()
 		# squished.emit()
-		get_parent().isSquished = true
 		squished.emit()
 		# if (get_parent() is Goomba):
 		# 	get_parent().isSquished = true

@@ -1,14 +1,25 @@
-[gd_scene load_steps=2 format=3 uid="uid://d24sbu5e2f0vg"]
+[gd_scene load_steps=4 format=3 uid="uid://d24sbu5e2f0vg"]
 
 [ext_resource type="Script" path="res://scripts/killzone.gd" id="1_vbsbn"]
+[ext_resource type="AudioStream" uid="uid://cpjjywwx6j8r8" path="res://assets/sounds/smb_mariodie.wav" id="2_gpk3y"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_2ei5p"]
 
 [node name="Killzone" type="Area2D"]
+collision_mask = 2
 script = ExtResource("1_vbsbn")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.6
+wait_time = 0.4
 one_shot = true
+
+[node name="GameOverMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_gpk3y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("WorldBoundaryShape2D_2ei5p")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="finished" from="GameOverMusic" to="." method="_on_game_over_music_finished"]

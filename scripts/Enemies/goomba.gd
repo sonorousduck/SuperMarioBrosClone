@@ -24,23 +24,36 @@ func handle_animation_player():
 	isSquished = true
 	animation_player.play("death")
 
+func handle_non_squish_death():
+	sprite.rotate(deg_to_rad(180))
+	animation_player.play("death_by_shell")
+	var spawn_tween = get_tree().create_tween()
+	spawn_tween.tween_property(self, "position", position + Vector2(0, -16), 0.2)
+	spawn_tween.tween_property(self, "position", position + Vector2(0, 32), 0.2)
+
 
 func _ready() -> void:
-	var squished = get_node("Area2D")
 	squished.connect("squished", handle_animation_player)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if raycast_right.is_colliding():
-		# var collider = raycast_right.get_collider()
+		var collider = raycast_right.get_collider()
+		if collider is Koopa:
+			if (collider as Koopa).moving:
+				handle_non_squish_death()
+			
+		
 
 		# if collider and collider.collision_layer & (1 << 2) != 0:
 		direction = -1
 		sprite.flip_h = true
 	if raycast_left.is_colliding():
-		# var collider = raycast_left.get_collider()
-
+		var collider = raycast_left.get_collider()
+		if collider is Koopa:
+			if (collider as Koopa).moving:
+				handle_non_squish_death()
 		# if collider and collider.collision_layer & (1 << 2) != 0:
 		# 	direction = -1
 		# 	sprite.flip_h = true
@@ -68,7 +81,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func die_from_hit() -> void:
-	queue_free()
+	handle_non_squish_death()
 
 	# for i in range(()):
 	# 	var collision = get_slide_collision(i)

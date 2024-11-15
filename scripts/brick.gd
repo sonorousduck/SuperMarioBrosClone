@@ -41,6 +41,8 @@ func check_for_collision():
 			if (collision is Goomba):
 				var enemy = collision as Goomba
 				enemy.die_from_hit()
+			if (collision is Koopa):
+				(collision as Koopa).die_from_hit()
 			if (collision is Mushroom):
 				var mushroom = collision as Mushroom
 				mushroom.bump()
