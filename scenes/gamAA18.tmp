@@ -59,7 +59,7 @@ editor_draw_limits = true
 
 [node name="Player" parent="." instance=ExtResource("1_cnpoc")]
 unique_name_in_owner = true
-position = Vector2(86, 0)
+position = Vector2(2477, -102)
 
 [node name="QuestionBlocks" type="Node" parent="."]
 
@@ -294,7 +294,7 @@ position = Vector2(10, 66)
 shape = SubResource("RectangleShape2D_623ht")
 
 [node name="SlideDownPosition" type="Node2D" parent="FlagCollider"]
-position = Vector2(6, 134)
+position = Vector2(10, 132)
 
 [node name="Path2D" type="Path2D" parent="."]
 position = Vector2(2729, -13)
@@ -303,10 +303,6 @@ curve = SubResource("Curve2D_ng2kk")
 [node name="PathToCastle" type="PathFollow2D" parent="Path2D"]
 unique_name_in_owner = true
 rotates = false
-
-[node name="LandDown" type="Marker2D" parent="."]
-unique_name_in_owner = true
-position = Vector2(2800, 16)
 
 [connection signal="body_entered" from="FlagCollider" to="." method="_on_flag_collider_body_entered"]
 [connection signal="body_entered" from="FlagCollider" to="FlagCollider" method="_on_body_entered"]

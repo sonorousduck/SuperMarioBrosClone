@@ -21,10 +21,12 @@ const BIG_MARIO_COLLISION_SHAPE = preload("res://Resources/CollisionShapes/BigMa
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var game_manager: GameManager = %GameManager
 @onready var camera: Camera2D = %MainCamera
+@onready var path: PathFollow2D = %PathToCastle
+@onready var land_spot: Marker2D = %LandDown
 var point_bonus = 0
-
+signal castle_entered
 var invincible = false
-
+var is_on_path := false
 
 enum PlayerMode {
 	SMALL,
@@ -55,7 +57,12 @@ func handle_movement_collision(collision: KinematicCollision2D):
 func bounce():
 	velocity.y = BOUNCE_VELOCITY	
 	
-
+func _process(delta: float) -> void:
+	if is_on_path:
+		path.progress += delta * SPEED
+		if path.progress_ratio > 0.97:
+			is_on_path = false
+			land_down()
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -63,8 +70,6 @@ func _physics_process(delta: float) -> void:
 		velocity.y += gravity * delta
 	else:
 		point_bonus = 0
-	print(global_position.x)
-	print(camera.global_position.x)	
 	if global_position.x > camera.global_position.x:
 		camera.global_position.x = global_position.x
 		
@@ -179,3 +184,48 @@ func handle_death():
 
 func _on_invincibility_timer_timeout() -> void:
 	invincible = false # Replace with function body.
+
+func on_pole_hit(slide_down_position: float):
+
+	set_physics_process(false)
+	velocity = Vector2.ZERO	
+	if is_on_path:
+		return
+	if player_mode == PlayerMode.SMALL:
+		animated_sprite.play("small_slide")
+	elif player_mode == PlayerMode.BIG:
+		animated_sprite.play("big_slide")
+		
+	var slide_down_tween = get_tree().create_tween()
+	slide_down_tween.tween_property(self, "position", Vector2(global_position.x, slide_down_position), 2.0)
+	slide_down_tween.tween_callback(slide_down_finished)
+	
+func slide_down_finished():
+	if player_mode == PlayerMode.SMALL:
+		animated_sprite.play("small_idle")
+	elif player_mode == PlayerMode.BIG:
+		animated_sprite.play("big_idle")
+	print("Reparenting")
+	is_on_path = true
+	reparent(path)
+	
+
+func land_down():
+	reparent(get_tree().root.get_node("main"))
+	var distance_to_marker = (land_spot.position - position).y
+	var land_tween = get_tree().create_tween()
+	land_tween.tween_property(self, "position", position + Vector2(0, distance_to_marker - get_half_sprite_size()), .1)
+	land_tween.tween_callback(go_to_castle)
+
+func go_to_castle():
+	var run_to_castle_tween = get_tree().create_tween()
+	run_to_castle_tween.tween_property(self, "position", position + Vector2(72, 0), .5)
+	run_to_castle_tween.tween_callback(finish)
+
+func finish():
+	print("FINISHED!")
+	#queue_free()
+	#castle_entered.emit()
+
+func get_half_sprite_size():
+	return -2 if player_mode == PlayerMode.SMALL else 6
