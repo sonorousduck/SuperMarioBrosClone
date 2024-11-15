@@ -17,10 +17,10 @@ const BIG_MARIO_COLLISION_SHAPE = preload("res://Resources/CollisionShapes/BigMa
 @onready var area_2d = $Area2D
 @onready var collisionShape2D = $CollisionShape2D
 @onready var animated_sprite = $AnimatedSprite
-@onready var music: AudioStreamPlayer2D = $"../Music"
+@onready var music: AudioStreamPlayer = %Music
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var game_manager: GameManager = %GameManager
-
+@onready var camera: Camera2D = %MainCamera
 var point_bonus = 0
 
 var invincible = false
@@ -58,13 +58,18 @@ func bounce():
 
 
 func _physics_process(delta: float) -> void:
-	print(player_mode)
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
 		point_bonus = 0
-	
+	print(global_position.x)
+	print(camera.global_position.x)	
+	if global_position.x > camera.global_position.x:
+		camera.global_position.x = global_position.x
+		
+	var camera_left_bound = camera.global_position.x - camera.get_viewport_rect().size.x / 2 / camera.zoom.x
+
 
 	if Input.is_action_just_pressed("esc"):
 		get_tree().quit()
@@ -82,6 +87,9 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 		velocity.y *= 0.5;
 
+		
+
+
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("move_left", "move_right")
@@ -98,9 +106,11 @@ func _physics_process(delta: float) -> void:
 	var collision = get_last_slide_collision()
 	if collision != null:
 		handle_movement_collision(collision)
-
-
-
+	
+	if global_position.x < camera_left_bound + 8 && sign(velocity.x) == -1:
+		velocity.x = 0
+		return
+	
 	move_and_slide()
 
 
@@ -109,8 +119,7 @@ func handle_mushroom_collision():
 		set_physics_process(false)
 		animated_sprite.play("small_to_big")
 		animation_player.play("small_to_big")
-		
-		#set_collision_shapes(true)
+
 
 func handle_enemy_collision():
 	if invincible:
@@ -122,6 +131,7 @@ func handle_enemy_collision():
 			animation_player.play("death")
 		PlayerMode.BIG:
 			set_physics_process(false)
+			set_collision_layer_value(2, false)
 			animated_sprite.play("big_to_small")
 			animation_player.play("big_to_small")
 
@@ -155,8 +165,6 @@ func _on_area_2d_area_entered(area:Area2D) -> void:
 		# handle_flower_collision()
 
 
-	pass # Replace with function body.
-
 func handle_death_tween():
 	music.stop()
 	animated_sprite.play("death")
@@ -167,12 +175,6 @@ func handle_death_tween():
 
 func handle_death():
 	get_tree().reload_current_scene()
-
-
-#func set_collision_shapes(is_small: bool):
-	#var collision_shape = SMALL_MARIO_COLLISION_SHAPE if is_small else BIG_MARIO_COLLISION_SHAPE
-	#area_2d.set_deferred("shape", collision_shape)
-	#collisionShape2D.set_deferred("shape", collision_shape)
 
 
 func _on_invincibility_timer_timeout() -> void:

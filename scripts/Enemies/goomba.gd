@@ -9,12 +9,14 @@ class_name Goomba
 var direction: int = -1
 var isSquished: bool = false
 
+@onready var player: Player = %Player
 
 @onready var raycast_right = $RayCastRight
 @onready var raycast_left = $RayCastLeft
 @onready var sprite = $Sprite2D as AnimatedSprite2D
 @onready var animation_player = $AnimationPlayer
 @onready var squished = $Area2D
+@onready var main_camera: Camera2D = %MainCamera
 @onready var game_manager: GameManager = %GameManager
 
 func goomba_die():
@@ -66,6 +68,10 @@ func _process(delta: float) -> void:
 		
 
 func _physics_process(delta: float) -> void:
+	if (abs(player.position.x - global_position.x) > main_camera.get_viewport().get_visible_rect().size.x / 3):
+		return
+	
+	
 	if isSquished:
 		return
 

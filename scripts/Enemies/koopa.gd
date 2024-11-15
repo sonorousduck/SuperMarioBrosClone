@@ -17,6 +17,8 @@ var timer: float = 0.0
 @onready var squished = $Area2D
 @onready var death_sound: AudioStreamPlayer2D = $DeathSound
 @onready var game_manager: GameManager = %GameManager
+@onready var main_camera: Camera2D = %MainCamera
+@onready var player: Player = %Player
 
 var bonus_points = 0
 
@@ -84,6 +86,9 @@ func _process(delta: float) -> void:
 				
 			elif (moving && collider is Player && timer <= 0.0):
 				(collider as Player).handle_enemy_collision()
+			else:
+				direction = -1
+				sprite.flip_h = false
 		else:
 			direction = -1
 			sprite.flip_h = false
@@ -108,21 +113,19 @@ func _process(delta: float) -> void:
 				
 			elif (moving && collider is Player && timer <= 0.0):
 				(collider as Player).handle_enemy_collision()
+			else:
+				direction = 1
+				sprite.flip_h = true
 		else:
 			direction = 1
 			sprite.flip_h = true
 
-	# Handle that you jumped on the enemy's head
-	# if raycast_top.is_colliding():
-	# 	var collided_with = raycast_top.get_collider()
-
-	# 	if collided_with:
-	# 		if collided_with.has_method("bounce"):
-	# 			collided_with.bounce()
-	# 			isSquished = true
-
 
 func _physics_process(delta: float) -> void:
+
+	if (!moving and abs(player.position.x - global_position.x) > main_camera.get_viewport().get_visible_rect().size.x / 3):
+		return
+	
 	if in_shell:
 		if moving:
 			velocity.x = direction * IN_SHELL_SPEED

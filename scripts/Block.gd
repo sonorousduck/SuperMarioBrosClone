@@ -14,6 +14,7 @@ const COIN = preload("res://scenes/moving_coin.tscn")
 @export var frame_count = 4;
 
 @onready var animated_sprite = $Sprite
+@onready var game_manager = %GameManager as GameManager
 var startingFrame: int = 0
 var is_empty = false;
 # func _ready() -> void:
@@ -51,6 +52,8 @@ func bump(player_mode):
 	match containing_item:
 		Item.ItemType.COIN:
 			spawn_coin()
+			game_manager.add_coins()
+			
 		Item.ItemType.MUSHROOM:
 			spawn_shroom()
 		Item.ItemType.ONE_UP:

@@ -13,7 +13,7 @@ script = ExtResource("1_vbsbn")
 wait_time = 0.4
 one_shot = true
 
-[node name="GameOverMusic" type="AudioStreamPlayer2D" parent="."]
+[node name="GameOverMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_gpk3y")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

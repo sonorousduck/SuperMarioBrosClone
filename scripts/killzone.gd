@@ -2,9 +2,9 @@ extends Area2D
 
 
 @onready var timer = $Timer
-@onready var audio_stream_player_2d: AudioStreamPlayer2D = $GameOverMusic
+@onready var audio_stream_player_2d: AudioStreamPlayer = $GameOverMusic
 # Better to make this a singleton, not this way. But I will fix in a real game instead of a clone
-@onready var music: AudioStreamPlayer2D = $"../Music"
+@onready var music: AudioStreamPlayer = %Music
 
 
 func _on_body_entered(body:Node2D) -> void:

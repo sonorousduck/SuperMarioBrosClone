@@ -38,6 +38,7 @@ turbulence_noise_strength = 0.5
 script = ExtResource("1_56coc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
 texture = ExtResource("1_xjjbv")
 region_enabled = true
 region_rect = Rect2(48, 16, 16, 16)
