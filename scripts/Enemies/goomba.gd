@@ -11,18 +11,25 @@ var isSquished: bool = false
 
 
 @onready var raycast_right = $RayCastRight
-@onready var raycast_top = $RayCastTop
 @onready var raycast_left = $RayCastLeft
-@onready var sprite = $Sprite2D
+@onready var sprite = $Sprite2D as AnimatedSprite2D
 @onready var animation_player = $AnimationPlayer
+@onready var squished = $Area2D
+
+func goomba_die():
+	sprite.play("squished")
+
 
 func handle_animation_player():
+	isSquished = true
 	animation_player.play("death")
 
 
 func _ready() -> void:
 	var squished = get_node("Area2D")
 	squished.connect("squished", handle_animation_player)
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if raycast_right.is_colliding():
@@ -75,4 +82,3 @@ func die_from_hit() -> void:
 	# 		if collision.has_method("bounce"):
 	# 			collision.bounce()
 	# 			
-

@@ -5,9 +5,9 @@ class_name Mushroom
 @export var horizontal_speed = 20
 @export var max_vertical_speed = 175
 @export var vertical_velocity_gain = 0.1
-@export var bounce_vertical_velocity_gain = 1.25
+@export var bounce_vertical_velocity_gain = .75
 
-@export var bounce_speed = 100
+@export var bounce_speed = 75
 
 @onready var shape_cast = $ShapeCast2D
 
@@ -21,8 +21,7 @@ func _ready() -> void:
 	var spawn_tween = get_tree().create_tween()
 	spawn_tween.tween_property(self, "position", position + Vector2(0, -16), 0.4)
 	spawn_tween.tween_callback(func (): 
-		allow_horizontal_movement = true 
-		bouncing = true)
+		allow_horizontal_movement = true )
 
 
 func _process(delta: float) -> void:

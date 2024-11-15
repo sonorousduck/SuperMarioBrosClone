@@ -14,6 +14,7 @@ class_name Brick
 @onready var sprite = $Sprite2D
 @onready var collider = $CollisionShape2D
 @onready var sfx = $AudioStreamPlayer2D
+@onready var bump_sfx = $BumpSound
 
 func bump(player_mode):
 	if (player_mode == Player.PlayerMode.BIG || player_mode == Player.PlayerMode.FIRE):
@@ -21,11 +22,12 @@ func bump(player_mode):
 		sfx.playing = true
 		gpu_particles.emitting = true
 		sprite.visible = false
+		set_collision_layer_value(1, false)
 	else:
 		var bump_tween = get_tree().create_tween()
 		bump_tween.tween_property(self, "position", position + Vector2(0, -5), .12)
 		bump_tween.chain().tween_property(self, "position", position, .12)
-	
+		bump_sfx.play()
 	
 	check_for_collision()
 		
@@ -48,4 +50,3 @@ func check_for_collision():
 
 func _on_gpu_particles_2d_finished() -> void:
 	queue_free()
-

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://bif5dei2tr45i"]
+[gd_scene load_steps=16 format=4 uid="uid://bif5dei2tr45i"]
 
 [ext_resource type="PackedScene" uid="uid://vttpyngfbhq6" path="res://scenes/player.tscn" id="1_cnpoc"]
 [ext_resource type="Texture2D" uid="uid://yb3kmstn5q5i" path="res://assets/sprites/World1-1.png" id="2_dvqk5"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dlbda1vjx8nii" path="res://scenes/brick.tscn" id="6_cj5b3"]
 [ext_resource type="PackedScene" uid="uid://bddj1h1223p6k" path="res://scenes/music.tscn" id="7_vx8jp"]
 [ext_resource type="PackedScene" uid="uid://dt711hjve7t3l" path="res://scenes/Pipe.tscn" id="8_rg4p6"]
+[ext_resource type="PackedScene" uid="uid://dy054rt33fipy" path="res://scenes/Enemies/koopa.tscn" id="9_24jtu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_edej0"]
 texture = ExtResource("2_dvqk5")
@@ -246,3 +247,6 @@ enterable = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pipes/LargePipe"]
 position = Vector2(0, 17)
 shape = SubResource("RectangleShape2D_14pww")
+
+[node name="Koopa" parent="." instance=ExtResource("9_24jtu")]
+position = Vector2(89, 12)

@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dlbda1vjx8nii"]
+[gd_scene load_steps=11 format=3 uid="uid://dlbda1vjx8nii"]
 
 [ext_resource type="Script" path="res://scripts/brick.gd" id="1_56coc"]
 [ext_resource type="Texture2D" uid="uid://yb3kmstn5q5i" path="res://assets/sprites/World1-1.png" id="1_xjjbv"]
 [ext_resource type="Texture2D" uid="uid://cxb001yhj0lda" path="res://assets/sprites/BrickBreakParticles.png" id="3_v1qei"]
 [ext_resource type="AudioStream" uid="uid://ml38k7gsterq" path="res://assets/sounds/smb_breakblock.wav" id="4_dkt6l"]
+[ext_resource type="AudioStream" uid="uid://fyvu56p7fios" path="res://assets/sounds/smb_bump.wav" id="5_1h2hv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wufp8"]
 size = Vector2(16, 16)
@@ -65,5 +66,8 @@ trail_lifetime = 1.53
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_dkt6l")
+
+[node name="BumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_1h2hv")
 
 [connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]
